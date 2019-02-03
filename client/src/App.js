@@ -1,28 +1,25 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Route } from 'react-router-dom';
+import styled, {withTheme} from 'styled-components';
+import Login from './components/views/Login';
+import Navigation from './components/Navigation';
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <AppContainer>
+        <Navigation />
+        <Route exact path="/login" render={props => <Login {...props} />} />
+      </AppContainer>
     );
   }
 }
 
-export default App;
+const AppContainer = styled.div`
+  background: ${props => props.theme.backgroundLight};
+  min-height: 100vh;
+  padding: 0;
+  margin: 0;
+`;
+
+export default withTheme(App);

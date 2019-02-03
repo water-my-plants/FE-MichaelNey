@@ -1,3 +1,12 @@
+html {
+  font-size: 62.5%; 
+  /* Make 1rem = 10px assuming default user agent font size of 16px. */
+}
+
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   padding: 0;
