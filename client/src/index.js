@@ -4,12 +4,13 @@ import './index.css';
 import App from './App';
 import { ThemeProvider } from 'styled-components';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import rootReducer from './reducers';
 import theme from './styledTheme';
 
-const store = createStore(rootReducer); //Create Redux Store, and pass it into our Provider component. Now our whole react app has access to the Provider if 
+const store = createStore(rootReducer, applyMiddleware(thunk)); //Create Redux Store, and pass it into our Provider component. Now our whole react app has access to the Provider if 
 //they use the Connect Higher Order Component from react-redux!
 
 ReactDOM.render(

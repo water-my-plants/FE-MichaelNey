@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { connect } from 'react-redux';
-import { userLogin } from '../../actions';
+import { userRegister } from '../../actions';
 
 import styled, { withTheme } from 'styled-components';
 import { Link } from 'react-router-dom';
@@ -12,12 +12,14 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-class Login extends React.Component {
+class Register extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             userInput: '',
-            passInput: ''
+            emailInput: '',
+            passInput: '',
+            confirmPassInput: ''
         }
     }
 
@@ -29,12 +31,16 @@ class Login extends React.Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
+        if(this.state.passInput !== this.state.confirmPassInput) return;
         let username = this.state.userInput;
+        let email = this.state.emailInput;
         let password = this.state.passInput
-        this.props.userLogin(username, password);
+        this.props.userRegister(username, email, password);
         this.setState({
             userInput: '',
-            passInput: ''
+            emailInput: '',
+            passInput: '',
+            confirmPassInput: ''
         });
     }
     
@@ -42,25 +48,29 @@ class Login extends React.Component {
         if(this.props.loggedIn) {
             this.props.history.push('/');
         }
-        
         return (
             <div>
                 <LoginBox>
-                    {/* If we are logging in, show a loading indicator while waiting for the response. */}
-                    {this.props.loggingIn && <LoadingContainer><LoadingSpinner /></LoadingContainer> }
-
-                    <h1>Login</h1>
+                    <h1>Register</h1>
                     <Form onSubmit={this.handleSubmit} autoComplete="off">
                         <InputContainer variant="filled">
                             <Label htmlFor="userInput">Username</Label>
                             <Input required type="text" name="userInput" value={this.state.userInput} onChange={this.handleInput} />
                         </InputContainer>
                         <InputContainer variant="filled">
+                            <Label htmlFor="emailInput">Email</Label>
+                            <Input required type="email" name="emailInput" value={this.state.emailInput} onChange={this.handleInput} />
+                        </InputContainer>
+                        <InputContainer variant="filled">
                             <Label htmlFor="passInput">Password</Label>
                             <Input required type="password" name="passInput" value={this.state.passInput} onChange={this.handleInput} />
                         </InputContainer>
-                        <LoginBtn type="submit">Login</LoginBtn>
-                        <RegisterLink to="/register">Don't have an account? Sign Up Here!</RegisterLink>
+                        <InputContainer variant="filled">
+                            <Label htmlFor="confirmPassInput">Confirm Password</Label>
+                            <Input required type="password" name="confirmPassInput" value={this.state.confirmPassInput} onChange={this.handleInput} />
+                        </InputContainer>
+                        <RegisterBtn type="submit">Register</RegisterBtn>
+                        <LoginLink to="/login">Already have an account? Log in Here!</LoginLink>
                     </Form>
                 </LoginBox>
             </div>
@@ -69,10 +79,10 @@ class Login extends React.Component {
 }
 
 const LoginBox = styled(Card)`
-    position: relative;
     width: 600px;
     margin: 0 auto;
     font-size: 1.6rem;
+    padding: 12px;
 
     h1 {
         text-align: center;
@@ -85,7 +95,7 @@ const LoginBox = styled(Card)`
     }
 `;
 
-const RegisterLink = styled(Link)`
+const LoginLink = styled(Link)`
     font-size: 1.4rem;
     text-decoration: underline;
     color: rgba(0, 0, 0, .5);
@@ -127,7 +137,7 @@ const Input = styled(FilledInput)`
     }
 `;
 
-const LoginBtn = styled(Button)`
+const RegisterBtn = styled(Button)`
     && {
         font-size: 1.6rem;
         width: 98%;
@@ -140,28 +150,11 @@ const LoginBtn = styled(Button)`
     }
 `;
 
-const LoadingContainer = styled.div`
-    position: absolute;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, .5);
-    z-index: 5;
-`;
-
-const LoadingSpinner = styled(CircularProgress)`
-    && {
-        color: ${props => props.theme.primaryLight};
-    }
-`; 
-
 const mapStateToProps = (state) => {
     return {
         loggedIn: state.userReducer.loggedIn,
-        loggingIn: state.userReducer.loggingIn
+        registering: state.userReducer.registering
     }
 };
 
-export default connect(mapStateToProps, { userLogin })(withTheme(Login));
+export default connect(mapStateToProps, { userRegister })(withTheme(Register));

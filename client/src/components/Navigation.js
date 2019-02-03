@@ -5,9 +5,8 @@ class Navigation extends React.Component {
     render() {
         return (
             <Nav>
-                Hey
-                <Link to="/">HGi</Link>
-                <Link to="/login">test</Link>
+                <Link to="/login">Login</Link>
+                <Link to="/register">Register</Link>
             </Nav>
         )
     }
@@ -21,6 +20,10 @@ const Nav = styled.nav`
     padding: 12px;
     margin-bottom: 24px;
     box-shadow: 0px 1px 3px black;
+
+    a {
+        margin: 0 4px;
+    }
 `;
 
 export default Navigation;
