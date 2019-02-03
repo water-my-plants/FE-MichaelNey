@@ -21,3 +21,8 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+/* NEVER use !important. This is only to override our Pop-up notifications dynamic styling properties. */
+#client-snackbar {
+  font-size: 1.45rem !important;
+}

@@ -5,12 +5,14 @@ import styled, {withTheme} from 'styled-components';
 import Login from './components/views/Login';
 import Register from './components/views/Register';
 import Navigation from './components/Navigation';
+import Notifications from './components/Notifications';
 
 class App extends Component {
   render() {
     return (
       <AppContainer>
         <Navigation />
+        <Notifications />
         <Route exact path="/login" render={props => <Login {...props} />} />
         <Route exact path="/register" render={props => <Register {...props} />} />
       </AppContainer>

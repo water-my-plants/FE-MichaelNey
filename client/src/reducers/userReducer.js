@@ -15,8 +15,6 @@ const initialState = {
 
 const userReducer = (state = initialState, action) => {
     switch(action.type) {
-        default:
-            return state;
         case USER_LOGIN_START:
             return {
                 ...state,
@@ -57,6 +55,8 @@ const userReducer = (state = initialState, action) => {
                 ...state,
                 registering: false
             }
+        default:
+            return state;
     }
 }
 
