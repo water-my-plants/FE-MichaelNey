@@ -47,7 +47,7 @@ class Login extends React.Component {
             <div>
                 <LoginBox>
                     {/* If we are logging in, show a loading indicator while waiting for the response. */}
-                    {this.props.loggingIn && <LoadingContainer><LoadingSpinner /></LoadingContainer> }
+                    {/* {this.props.loggingIn && <LoadingContainer><LoadingSpinner /></LoadingContainer> } */}
 
                     <h1>Login</h1>
                     <Form onSubmit={this.handleSubmit} autoComplete="off">
@@ -59,7 +59,7 @@ class Login extends React.Component {
                             <Label htmlFor="passInput">Password</Label>
                             <Input required type="password" name="passInput" value={this.state.passInput} onChange={this.handleInput} />
                         </InputContainer>
-                        <LoginBtn type="submit">Login</LoginBtn>
+                        <LoginBtn type="submit">{this.props.loggingIn ? <LoadingSpinner size="28" /> : 'Login'}</LoginBtn>
                         <RegisterLink to="/register">Don't have an account? Sign Up Here!</RegisterLink>
                     </Form>
                 </LoginBox>
@@ -153,7 +153,9 @@ const LoadingContainer = styled.div`
 
 const LoadingSpinner = styled(CircularProgress)`
     && {
-        color: ${props => props.theme.primaryLight};
+        height: 28px;
+        width: 28px;
+        color: white;
     }
 `; 
 
