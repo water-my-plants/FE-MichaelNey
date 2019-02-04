@@ -24,7 +24,7 @@ export const userLogin = (username, password) => dispatch => {
         })
         .catch(err => {
             dispatch({type: USER_LOGIN_FAILURE});
-            dispatch(addNotifHelper(err.response.data.error, 'error'));
+            dispatch(addNotifHelper(err, 'error'));
         });
 }
 
@@ -42,6 +42,6 @@ export const userRegister = (username, email, password) => dispatch => {
         })
         .catch(err => {
             dispatch({type: USER_REGISTER_FAILURE});
-            dispatch(addNotifHelper(err.response.data.error, 'error'));
+            dispatch(addNotifHelper(err, 'error'));
         });
 }
