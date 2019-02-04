@@ -9,15 +9,18 @@ import Logout from './components/views/Logout';
 import Register from './components/views/Register';
 import Navigation from './components/Navigation';
 import Notifications from './components/Notifications';
-
+import LoadUser from './components/LoadUser';
 class App extends Component {
+  
   render() {
+
     return (
       <AppContainer>
         {/* We place Navigation in a Route to pass props to it. This is because our use of connect HOC from react-redux breaks the NavLink
         component not updating with new location. This is a proper fix from React-Router documentation, to stop the component from not re-rendering with a new
         NavLink click.
         */}
+        <LoadUser />
         <Route path="/" render={props => <Navigation {...props} />} />
         <Notifications />
         <AppPageContent>

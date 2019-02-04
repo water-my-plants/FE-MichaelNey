@@ -1,16 +1,25 @@
 import React from 'react';
+import styled from 'styled-components';
 import { connect } from 'react-redux';
-import { userLogin } from '../../actions'
+
 class Home extends React.Component {
     
     render() {
         return (
-            <div>
-                Welcome Home!
-            </div>
+            <Container>
+                <header>Welcome, {this.props.username}</header>
+            </Container>
         )
     }
 }
+
+const Container = styled.div`
+    text-align: center;
+
+    header {
+        font-size: 36px;
+    }
+`;
 
 const mapStateToProps = state => {
     return {
@@ -18,4 +27,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps, { userLogin })(Home);
+export default connect(mapStateToProps, { })(Home);

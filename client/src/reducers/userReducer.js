@@ -1,6 +1,6 @@
 //Action Types
 import { 
-    USER_LOGIN_START, USER_LOGIN_SUCCESS, USER_LOGIN_FAILURE, USER_REGISTER_START, USER_REGISTER_SUCCESS, USER_REGISTER_FAILURE, USER_LOGOUT
+    USER_LOGIN_START, USER_LOGIN_SUCCESS, USER_LOGIN_FAILURE, USER_REGISTER_START, USER_REGISTER_SUCCESS, USER_REGISTER_FAILURE, USER_LOGOUT, USER_RETURN_START, USER_RETURN_SUCCESS
 } from '../actions';
 
 const initialState = {
@@ -63,6 +63,23 @@ const userReducer = (state = initialState, action) => {
             return {
                 ...state,
                 registering: false
+            }
+        case USER_RETURN_START: 
+            return {
+                ...state,
+                returning: true
+            }
+        case USER_RETURN_SUCCESS: 
+            return {
+                ...state,
+                returning: false,
+                loggingIn: false,
+                loggedIn: true,
+                userId: action.payload.id,
+                username: action.payload.username,
+                email: action.payload.email,
+                phone: action.payload.phone,
+                imgurl: action.payload.imgUrl
             }
         default:
             return state;

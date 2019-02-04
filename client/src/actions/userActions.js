@@ -9,7 +9,8 @@ export const USER_REGISTER_START = 'USER_REGISTER_START';
 export const USER_REGISTER_SUCCESS = 'USER_REGISTER_SUCCESS';
 export const USER_REGISTER_FAILURE = 'USER_REGISTER_FAILURE';
 export const USER_LOGOUT = 'USER_LOGOUT';
-
+export const USER_RETURN_START = 'USER_RETURN_START';
+export const USER_RETURN_SUCCESS = 'USER_RETURN_SUCCESS';
 
 export const userLogin = (username, password) => dispatch => {
     let body = {
@@ -20,6 +21,7 @@ export const userLogin = (username, password) => dispatch => {
     axios.post(`${process.env.REACT_APP_API}/login`, body)
         .then(res => {
             localStorage.setItem('token', res.data.token);
+            localStorage.setItem('userId', res.data.user.id);
             dispatch({type: USER_LOGIN_SUCCESS, payload: res.data.user});
             dispatch(addNotifHelper('Welcome!'));
         })
@@ -31,6 +33,7 @@ export const userLogin = (username, password) => dispatch => {
 
 export const userLogout = () => dispatch => {
     localStorage.removeItem('token');
+    localStorage.removeItem('userId');
     dispatch({type: USER_LOGOUT});
 }
 
@@ -51,4 +54,15 @@ export const userRegister = (username, email, phone, password) => dispatch => {
             dispatch({type: USER_REGISTER_FAILURE});
             dispatch(addNotifHelper(err, 'error'));
         });
+}
+
+export const userLoad = (url, token) => dispatch => {
+    dispatch({type: USER_RETURN_START});
+    
+    let headers = {
+        'authorization': token
+    };
+    axios.get(url, { headers })
+            .then(res => dispatch({type: USER_RETURN_SUCCESS, payload: res.data}))
+            .catch(err => userLoad(url, token));
 }
