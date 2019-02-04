@@ -7,7 +7,8 @@ const theme = {
     error: '#d13648',
     small: '600px', //Large Phone/Tablet break point.
     medium: '960px', //Tablet/Laptop break point.
-    large: '1080px' //Desktop break point.
+    large: '1024px', //Desktop break point.
+    maxWidth: '1280px' //Website max width
 }
 
 export default theme;

@@ -51,9 +51,6 @@ class Register extends React.Component {
         return (
             <div>
                 <LoginBox>
-                    {/* If we are logging in, show a loading indicator while waiting for the response. */}
-                    {/* {this.props.registering && <LoadingContainer><LoadingSpinner /></LoadingContainer> } */}
-
                     <h1>Register</h1>
                     <Form onSubmit={this.handleSubmit} autoComplete="off">
                         <InputContainer variant="filled">
@@ -72,6 +69,7 @@ class Register extends React.Component {
                             <Label htmlFor="confirmPassInput">Confirm Password</Label>
                             <Input required type="password" name="confirmPassInput" value={this.state.confirmPassInput} onChange={this.handleInput} />
                         </InputContainer>
+                        {/* If we are logging in, show a loading indicator while waiting for the response. */}
                         <RegisterBtn type="submit">{this.props.registering ? <LoadingSpinner size="28" /> : 'Register'}</RegisterBtn>
                         <LoginLink to="/login">Already have an account? Log in Here!</LoginLink>
                     </Form>
@@ -151,17 +149,6 @@ const RegisterBtn = styled(Button)`
             background: ${props => props.theme.primaryLight};
         }
     }
-`;
-
-const LoadingContainer = styled.div`
-    position: absolute;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, .5);
-    z-index: 5;
 `;
 
 const LoadingSpinner = styled(CircularProgress)`

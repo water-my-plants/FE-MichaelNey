@@ -11,10 +11,16 @@ class App extends Component {
   render() {
     return (
       <AppContainer>
-        <Navigation />
+        {/* We place Navigation in a Route to pass props to it. This is because our use of connect HOC from react-redux breaks the NavLink
+        component not updating with new location. This is a proper fix from React-Router documentation, to stop the component from not re-rendering with a new
+        NavLink click.
+        */}
+        <Route path="/" render={props => <Navigation {...props} />} />
         <Notifications />
-        <Route exact path="/login" render={props => <Login {...props} />} />
-        <Route exact path="/register" render={props => <Register {...props} />} />
+        <AppPageContent>
+          <Route exact path="/login" render={props => <Login {...props} />} />
+          <Route exact path="/register" render={props => <Register {...props} />} />
+        </AppPageContent>
       </AppContainer>
     );
   }
@@ -25,6 +31,12 @@ const AppContainer = styled.div`
   min-height: 100vh;
   padding: 0;
   margin: 0;
+`;
+
+const AppPageContent = styled.div`
+  max-width: ${props => props.theme.maxWidth};
+  width: 100%;
+  margin: 0 auto;
 `;
 
 export default withTheme(App);
