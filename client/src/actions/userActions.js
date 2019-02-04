@@ -22,6 +22,7 @@ export const userLogin = (username, password) => dispatch => {
         .then(res => {
             localStorage.setItem('token', res.data.token);
             localStorage.setItem('userId', res.data.user.id);
+            localStorage.setItem('tokenExp', Date.now() + (1000 * 60 * 30)); //Set token expire date 30 minutes later (Which is when it expires on the backend.)
             dispatch({type: USER_LOGIN_SUCCESS, payload: res.data.user});
             dispatch(addNotifHelper('Welcome!'));
         })
@@ -34,6 +35,7 @@ export const userLogin = (username, password) => dispatch => {
 export const userLogout = () => dispatch => {
     localStorage.removeItem('token');
     localStorage.removeItem('userId');
+    localStorage.removeItem('tokenExp');
     dispatch({type: USER_LOGOUT});
 }
 
@@ -64,5 +66,5 @@ export const userLoad = (url, token) => dispatch => {
     };
     axios.get(url, { headers })
             .then(res => dispatch({type: USER_RETURN_SUCCESS, payload: res.data}))
-            .catch(err => userLoad(url, token));
+            .catch(err => userLogout());
 }

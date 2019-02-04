@@ -20,7 +20,7 @@ class App extends Component {
         component not updating with new location. This is a proper fix from React-Router documentation, to stop the component from not re-rendering with a new
         NavLink click.
         */}
-        <LoadUser />
+        <Route path="/" render={props => <LoadUser {...props} />} />
         <Route path="/" render={props => <Navigation {...props} />} />
         <Notifications />
         <AppPageContent>

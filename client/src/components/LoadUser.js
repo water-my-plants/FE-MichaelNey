@@ -1,5 +1,5 @@
 import React from 'react';
-import { userLoad } from '../actions';
+import { userLoad, userLogout, addNotifHelper } from '../actions';
 import { connect } from 'react-redux';
 import styled, { withTheme } from 'styled-components';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -8,12 +8,29 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 class PopulateUser extends React.Component {
 
     componentDidMount() {
+        setInterval(this.checkTokenExpiry, 60000);
         let token = localStorage.getItem('token');
         let id = localStorage.getItem('userId');
-
+        if(this.checkTokenExpiry()) return;
         if(token) {
         let url = `${process.env.REACT_APP_API}/users/${id}`;
         this.props.userLoad(url, token);
+        }
+    }
+
+    checkTokenExpiry = () => {
+        let expire = localStorage.getItem('tokenExp');
+        if(expire) {
+            if(Number(expire) < Date.now()) {
+                this.props.userLogout();
+                this.props.history.push('/login');
+                this.props.addNotifHelper({message: 'Your session has expired.'}, 'error')
+                return true;
+            }
+        } else {
+            this.props.userLogout();
+            this.props.history.push('/login');
+            return true;
         }
     }
 
@@ -53,4 +70,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, { userLoad })(withTheme(PopulateUser));
+export default connect(mapStateToProps, { userLoad, userLogout, addNotifHelper })(withTheme(PopulateUser));
