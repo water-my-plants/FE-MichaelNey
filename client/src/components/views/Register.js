@@ -3,6 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { userRegister } from '../../actions';
 
+import MaskedInput from 'react-text-mask';
 import styled, { withTheme } from 'styled-components';
 import { Link } from 'react-router-dom';
 import Card from '@material-ui/core/Card';
@@ -18,8 +19,10 @@ class Register extends React.Component {
         this.state = {
             userInput: '',
             emailInput: '',
+            phoneInput: '',
             passInput: '',
-            confirmPassInput: ''
+            confirmPassInput: '',
+            formError: ''
         }
     }
 
@@ -29,16 +32,45 @@ class Register extends React.Component {
         });
     }
 
+    formValidation = (phone) => {
+        if(this.state.passInput !== this.state.confirmPassInput) {
+            this.setState({
+                formError: 'Passwords do not match!'
+            });
+            return false;
+        }
+
+        //check if phone number matches E.164 phone number format - To match Twilio API phone number specifications.
+        let phoneRegex = RegExp(/^\+?[1-9]\d{1,14}$/);
+        console.log(phoneRegex.test(phone))
+        if(phoneRegex.test(phone) === false) {
+            this.setState({
+                formError: 'Phone number must include country code. Example US number: +13609554732'
+            })
+            return false;
+        }
+        return true;
+    }
+
+    clearFormError = () => {
+        this.setState({
+            formError: ''
+        });
+    }
+
     handleSubmit = (e) => {
         e.preventDefault();
-        if(this.state.passInput !== this.state.confirmPassInput) return;
+        // If formValidation fails, it will return false. If so, don't submit form.
+        if(!this.formValidation(this.state.phoneInput)) return;
         let username = this.state.userInput;
         let email = this.state.emailInput;
-        let password = this.state.passInput
-        this.props.userRegister(username, email, password);
+        let phone = this.state.phoneInput;
+        let password = this.state.passInput;
+        this.props.userRegister(username, email, phone, password);
         this.setState({
             userInput: '',
             emailInput: '',
+            phoneInput: '',
             passInput: '',
             confirmPassInput: ''
         });
@@ -62,13 +94,20 @@ class Register extends React.Component {
                             <Input required type="email" name="emailInput" value={this.state.emailInput} onChange={this.handleInput} />
                         </InputContainer>
                         <InputContainer variant="filled">
+                            <Label htmlFor="phoneInput">Phone</Label>
+                            <Input required type="tel" name="phoneInput" value={this.state.phoneInput} onChange={this.handleInput} inputComponent={PhoneInput} />
+                        </InputContainer>
+                        <InputContainer variant="filled">
                             <Label htmlFor="passInput">Password</Label>
                             <Input required type="password" name="passInput" value={this.state.passInput} onChange={this.handleInput} />
                         </InputContainer>
                         <InputContainer variant="filled">
                             <Label htmlFor="confirmPassInput">Confirm Password</Label>
                             <Input required type="password" name="confirmPassInput" value={this.state.confirmPassInput} onChange={this.handleInput} />
+                            {/* Do we have an error in the form? Display it to the user! */}
+                            {this.state.formError !== '' && <FormError onClick={this.clearFormError}>{this.state.formError}</FormError>}
                         </InputContainer>
+                        
                         {/* If we are logging in, show a loading indicator while waiting for the response. */}
                         <RegisterBtn type="submit">{this.props.registering ? <LoadingSpinner size="28" /> : 'Register'}</RegisterBtn>
                         <LoginLink to="/login">Already have an account? Log in Here!</LoginLink>
@@ -78,6 +117,37 @@ class Register extends React.Component {
         )
     }
 }
+
+const PhoneInput = (props) => {
+    const { inputRef, ...other } = props;
+    //This component is used in our Phone input, to keep  E.164 Phone Number format compliance for our Twilio API.
+    return (
+        <MaskedInput
+            {...other}
+            guide={false}
+            ref={ref => {
+            inputRef(ref ? ref.inputElement : null);
+            }}
+            mask={['+', /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/]}
+        />
+    )
+}
+
+const FormError = styled.div`
+    position: relative;
+    border: 1px solid ${props => props.theme.error};
+    background: ${props => props.theme.error};
+    color: white;
+    font-size: 1.6rem;
+    border-radius: 4px;
+    padding: 4px;
+    width: 100%;
+    margin-top: 12px;
+    text-align: center;
+    &:hover {
+        cursor: pointer;
+    }
+`;
 
 const LoginBox = styled(Card)`
     position: relative;
@@ -162,7 +232,8 @@ const LoadingSpinner = styled(CircularProgress)`
 const mapStateToProps = (state) => {
     return {
         loggedIn: state.userReducer.loggedIn,
-        registering: state.userReducer.registering
+        registering: state.userReducer.registering,
+        registered: state.userReducer.registered
     }
 };
 

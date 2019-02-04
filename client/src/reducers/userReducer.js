@@ -1,9 +1,10 @@
 //Action Types
 import { 
-    USER_LOGIN_START, USER_LOGIN_SUCCESS, USER_LOGIN_FAILURE, USER_REGISTER_START, USER_REGISTER_SUCCESS, USER_REGISTER_FAILURE
+    USER_LOGIN_START, USER_LOGIN_SUCCESS, USER_LOGIN_FAILURE, USER_REGISTER_START, USER_REGISTER_SUCCESS, USER_REGISTER_FAILURE, USER_LOGOUT
 } from '../actions';
 
 const initialState = {
+    userId: '',
     username: '',
     email: '',
     phone: '',
@@ -15,6 +16,16 @@ const initialState = {
 
 const userReducer = (state = initialState, action) => {
     switch(action.type) {
+        case USER_LOGOUT:
+            return {
+                ...state,
+                userId: '',
+                username: '',
+                email: '',
+                phone: '',
+                imgUrl: '',
+                loggedIn: false
+            }
         case USER_LOGIN_START:
             return {
                 ...state,
@@ -25,6 +36,7 @@ const userReducer = (state = initialState, action) => {
                 ...state,
                 loggingIn: false,
                 loggedIn: true,
+                userId: action.payload.id,
                 username: action.payload.username,
                 email: action.payload.email,
                 phone: action.payload.phone,
@@ -43,12 +55,9 @@ const userReducer = (state = initialState, action) => {
         case USER_REGISTER_SUCCESS: 
             return {
                 ...state,
+                registered: true,
                 registering: false,
-                loggedIn: true,
-                username: action.payload.username,
-                email: action.payload.email,
-                phone: action.payload.phone,
-                imgurl: action.payload.imgUrl
+                loggedIn: false
             }
         case USER_REGISTER_FAILURE:
             return {

@@ -3,6 +3,7 @@ import { Route } from 'react-router-dom';
 import styled, {withTheme} from 'styled-components';
 
 import Login from './components/views/Login';
+import Logout from './components/views/Logout';
 import Register from './components/views/Register';
 import Navigation from './components/Navigation';
 import Notifications from './components/Notifications';
@@ -18,6 +19,7 @@ class App extends Component {
         <Route path="/" render={props => <Navigation {...props} />} />
         <Notifications />
         <AppPageContent>
+          <Route exact path="/logout" render={props => <Logout {...props} />} />
           <Route exact path="/login" render={props => <Login {...props} />} />
           <Route exact path="/register" render={props => <Register {...props} />} />
         </AppPageContent>

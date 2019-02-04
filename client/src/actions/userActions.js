@@ -8,7 +8,7 @@ export const USER_LOGIN_FAILURE = 'USER_LOGIN_FAILURE';
 export const USER_REGISTER_START = 'USER_REGISTER_START';
 export const USER_REGISTER_SUCCESS = 'USER_REGISTER_SUCCESS';
 export const USER_REGISTER_FAILURE = 'USER_REGISTER_FAILURE';
-
+export const USER_LOGOUT = 'USER_LOGOUT';
 
 
 export const userLogin = (username, password) => dispatch => {
@@ -19,8 +19,9 @@ export const userLogin = (username, password) => dispatch => {
     dispatch({type: USER_LOGIN_START});
     axios.post(`${process.env.REACT_APP_API}/login`, body)
         .then(res => {
-            dispatch({type: USER_LOGIN_SUCCESS});
-            console.log(res);
+            localStorage.setItem('token', res.data.token);
+            dispatch({type: USER_LOGIN_SUCCESS, payload: res.data.user});
+            dispatch(addNotifHelper('Welcome!'));
         })
         .catch(err => {
             dispatch({type: USER_LOGIN_FAILURE});
@@ -28,17 +29,23 @@ export const userLogin = (username, password) => dispatch => {
         });
 }
 
-export const userRegister = (username, email, password) => dispatch => {
+export const userLogout = () => dispatch => {
+    localStorage.removeItem('token');
+    dispatch({type: USER_LOGOUT});
+}
+
+export const userRegister = (username, email, phone, password) => dispatch => {
     let body = {
         username,
         email,
+        phone,
         password
-    }
+    };
     dispatch({type: USER_REGISTER_START});
     axios.post(`${process.env.REACT_APP_API}/register`, body)
         .then(res => {
-            dispatch({type: USER_REGISTER_SUCCESS});
-            console.log(res);
+            dispatch({type: USER_REGISTER_SUCCESS, payload: res.data});
+            dispatch(addNotifHelper('Successfully Registered! Please login.', 'success'));
         })
         .catch(err => {
             dispatch({type: USER_REGISTER_FAILURE});

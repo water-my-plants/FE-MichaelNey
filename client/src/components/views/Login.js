@@ -39,6 +39,7 @@ class Login extends React.Component {
     }
     
     render() {
+        //Causing warning - cannont update during an existing state transition, however it works as intended. No negative side effects.
         if(this.props.loggedIn) {
             this.props.history.push('/');
         }
