@@ -8,7 +8,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 class PopulateUser extends React.Component {
 
     componentDidMount() {
-        setInterval(this.checkTokenExpiry, 60000);
+        setInterval(this.checkTokenExpiry, 30000);
         let token = localStorage.getItem('token');
         let id = localStorage.getItem('userId');
         if(this.checkTokenExpiry()) return;

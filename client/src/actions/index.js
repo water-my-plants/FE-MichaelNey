@@ -2,3 +2,4 @@
 //So we will export all variables and functions from specified files, so we can access everything from one index.js file!
 export * from './userActions';
 export * from './notificationActions';
+export * from './plantsActions';
