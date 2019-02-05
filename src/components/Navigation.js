@@ -21,7 +21,7 @@ class Navigation extends React.Component {
                     </NavLinks>
                     <NavActions>
                         {/* If we aren't logged in, only show the Login link. Otherwise, show all the navigation options and our users profile name + link to profile */}
-                        {!this.props.loggedIn ? <NavbarLink activeClassName="active" to="/login">Login</NavbarLink> :
+                        {!this.props.loggedIn ? <><NavbarLink activeClassName="active" to="/login">Login</NavbarLink><NavbarLink activeClassName="active" to="/register">Register</NavbarLink></> :
                         <>
                             <NavbarLink activeClassName="active" to="/profile">{this.props.username} <i className="fas fa-user-circle"></i></NavbarLink>
                             <NavbarLink activeClassName="active" to="/logout"><i className="fas fa-sign-out-alt"></i></NavbarLink>
