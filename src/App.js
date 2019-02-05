@@ -43,6 +43,7 @@ class App extends Component {
 const AppContainer = styled.div`
   background: ${props => props.theme.backgroundLight};
   min-height: 100vh;
+  height: 100%;
   padding: 0;
   margin: 0;
 `;

@@ -11,10 +11,10 @@ const Footer = props => {
 
 const Container = styled.div`
     width: 100%;
-    height: 51px;
+    height: 22px;
     background: ${props => props.theme.primary};
-    position: absolute;
-    bottom: -32px;
+    position: fixed;
+    bottom: 0;
 `;
 
 export default Footer;
