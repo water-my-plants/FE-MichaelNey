@@ -17,6 +17,6 @@ export const fetchPlants = () => dispatch => {
         })
         .catch(err => {
             dispatch({type: FETCH_PLANTS_FAILURE});
-            addNotifHelper(err.response.message, 'error');
+            addNotifHelper(err, 'error');
         });
 }
