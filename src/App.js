@@ -7,9 +7,11 @@ import Home from './components/views/Home';
 import Login from './components/views/Login';
 import Logout from './components/views/Logout';
 import Register from './components/views/Register';
+import PlantForm from './components/views/PlantForm';
 import Navigation from './components/Navigation';
 import Notifications from './components/Notifications';
 import LoadUser from './components/LoadUser';
+
 class App extends Component {
   
   render() {
@@ -25,6 +27,7 @@ class App extends Component {
         <Notifications />
         <AppPageContent>
           <PrivateRoute exact path="/" component={Home} />
+          <PrivateRoute exact path="/plants/add" component={PlantForm} />
           <Route exact path="/logout" render={props => <Logout {...props} />} />
           <Route exact path="/login" render={props => <Login {...props} />} />
           <Route exact path="/register" render={props => <Register {...props} />} />

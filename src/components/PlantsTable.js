@@ -5,7 +5,6 @@ import Table from '@material-ui/core/Table';
 import TableHead from '@material-ui/core/TableHead';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
-import TableFooter from '@material-ui/core/TableFooter';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
@@ -24,7 +23,7 @@ class PlantsTable extends React.Component {
             </Head>
             <TableBody>
                 {/* If we have no plants, we will display the table, with the first and only cell being a message stating that they have no plants, but offering a link for them to add one! If there are plants, we simply map over them to display a table row for each plant! */}
-                {this.props.plants.length < 1 ? <><Cell align="left"></Cell><Cell align="center"><h3>You don't have any plants! <Link to="/plants/add">Add one!</Link></h3></Cell></> :
+                {this.props.plants.length < 1 ? <><TableRow><Cell align="left">{''}</Cell><Cell align="center"><h3>You don't have any plants! <Link to="/plants/add">Add one!</Link></h3></Cell></TableRow></> :
                     this.props.plants.map(p => {
                         return  <TableRow>
                                     <Cell align="left">{p.name}</Cell>
@@ -69,14 +68,6 @@ const Head = styled(TableHead)`
         th {
             color: white;
         }
-    }
-`;
-
-const Footer = styled(TableFooter)`
-    && {
-        background: ${props => props.theme.primary};
-        width: 100%;
-        height: 32px;
     }
 `;
 
