@@ -41,8 +41,8 @@ class ScheduleTableCell extends React.Component {
                         {/* onClick={e => this.deleteSchedule(this.props.plant.id)} for yes button */}
                     </ModalBox>
                 </DeleteModal>
-                <Cell align="left">{this.props.schedule.watering_time}</Cell>
-                <Cell align="center">{moment(this.props.schedule.watering_time).fromNow()}</Cell>
+                <Cell align="left">{moment(this.props.time).format('ddd, MMM, Do YYYY, h:mm:ss a')}</Cell>
+                <Cell align="center">{moment(this.props.time).fromNow()}</Cell>
                 <Cell align="right"><ActionButton edit><Link to={`/plants/`}><i className="fas fa-edit"></i></Link></ActionButton><ActionButton delete onClick={this.toggleModal}><i className="fas fa-times-circle"></i></ActionButton></Cell>
             </TableRow> 
         )
@@ -88,6 +88,7 @@ const ModalBox = styled(Paper)`
 const Cell = styled(TableCell)`
     && {
         font-size: 1.6rem;
+        width: 33%;
     }
 `;
 

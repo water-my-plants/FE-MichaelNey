@@ -43,14 +43,14 @@ class ScheduleTable extends React.Component {
             <TableBody>
                 {/* If we have no plants, we will display the table, with the first and only cell being a message stating that they have no plants, but offering a link for them to add one! If there are plants, we simply map over them to display a table row for each plant! */}
                 {this.props.schedule.length < 1 ? <><TableRow><Cell align="left">{''}</Cell><Cell align="center"><h3>You don't have any watering schedules for this plant!</h3><h3><ToggleModalSpan onClick={this.toggleModal}>Add one!</ToggleModalSpan></h3></Cell></TableRow></> :
-                    this.props.schedule.map(p => {
-                        return  <ScheduleTableCell  key={p.id} plant={p} /> //deleteSchedule={this.props.deleteSchedule}
+                    this.props.schedule.sort().map(p => {
+                        return  <ScheduleTableCell key={p} time={p} /> //deleteSchedule={this.props.deleteSchedule}
                     })
                 }
             </TableBody>
         </TableContainer>
         <ScheduleFormModal open={this.state.modalOpen}>
-            <ScheduleForm toggleModal={this.toggleModal} />
+            <ScheduleForm addingSchedule={this.props.addingSchedule} addSchedule={this.props.addSchedule} toggleModal={this.toggleModal} />
         </ScheduleFormModal>
       </TablePaper>
     )

@@ -19,16 +19,37 @@ export const fetchSchedule = (id) => dispatch => {
     }
     axios.get(`${process.env.REACT_APP_API}/plants/${id}/schedule`, { headers })
         .then(res => {
+            console.log(res.data);
             dispatch({type: FETCH_SCHEDULE_SUCCESS, payload: res.data});
         })
         .catch(err => {
             dispatch({type: FETCH_SCHEDULE_FAILURE});
             //If there are no schedules for the plant, server responds with 400 status code. If it does that, we know to just display an empty schedule table. Otherwise, give an actual error notification popup to the user.
-            if(err.response.status === 400) {
-                dispatch({type: FETCH_SCHEDULE_SUCCESS, payload: []});
-            } else {
-                dispatch(addNotifHelper(err, 'error'));
+            if(err.response) {
+                if(err.response.status === 400) {
+                    dispatch({type: FETCH_SCHEDULE_SUCCESS, payload: []});
+                } else {
+                    dispatch(addNotifHelper(err, 'error'));
+                }
             }
+            
+        });
+}
+
+export const addSchedule = (id, times) => dispatch => {
+    dispatch({type: ADD_SCHEDULE_START});
+    let token = localStorage.getItem('token');
+    let headers = {
+        'authorization': token
+    }
+    axios.post(`${process.env.REACT_APP_API}/plants/${id}`, times, { headers })
+        .then(res => {
+            dispatch({type: ADD_SCHEDULE_SUCCESS, payload: res.data});
+            dispatch(addNotifHelper(`Added to your Plant's watering schedule!`, 'success'));
+        })
+        .catch(err => {
+            dispatch({type: ADD_SCHEDULE_FAILURE});
+            dispatch(addNotifHelper(err, 'error'));
         });
 }
 

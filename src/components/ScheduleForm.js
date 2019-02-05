@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { withRouter } from 'react-router-dom';
 import styled, { withTheme } from 'styled-components';
 import moment from 'moment';
 import Card from '@material-ui/core/Card';
@@ -34,10 +34,8 @@ class ScheduleForm extends React.Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
-        console.log(this.createWaterTimes());
-        // this.setState({
-        //     dateInput: new Date(Date.now())
-        // });
+        let waterTimes = this.createWaterTimes();
+        this.props.addSchedule(this.props.match.params.id, {times: waterTimes});
     }
 
     createWaterTimes = () => {
@@ -241,4 +239,4 @@ const LoadingSpinner = styled(CircularProgress)`
     }
 `; 
 
-export default withTheme(ScheduleForm);
+export default withTheme(withRouter(ScheduleForm));
