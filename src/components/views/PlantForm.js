@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { addPlant } from '../../actions'
 import styled, { withTheme } from 'styled-components';
-import { Link } from 'react-router-dom';
+import moment from 'moment';
 import Card from '@material-ui/core/Card';
 import FormControl from '@material-ui/core/FormControl'
 import FilledInput from '@material-ui/core/FilledInput';
@@ -16,11 +17,26 @@ class PlantForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            minDate: new Date(Date.now() + 99999999),
             nameInput: '',
             characteristicsInput: '',
             descInput: '',
-            dateInput: new Date()
+            dateInput: new Date(Date.now() + 99999999)
         }
+    }
+
+    handleSubmit = e => {
+        e.preventDefault();
+        let plantObj = {};
+        plantObj.name = this.state.nameInput;
+        plantObj.next_water = moment(this.state.dateInput).format('YYYY-MM-DD');
+        if(this.state.characteristicsInput !== '') {
+            plantObj.characteristics = this.state.characteristicsInput;
+        }
+        if(this.state.descInput !== '') {
+            plantObj.description = this.state.descInput;
+        }
+        this.props.addPlant(plantObj);
     }
 
     handleInput = (e) => {
@@ -36,35 +52,36 @@ class PlantForm extends React.Component {
     }
 
     render() {
-
         return(
             <div>
                 <PlantBox>
                     <h1>New Plant</h1>
                     <Form onSubmit={this.handleSubmit} autoComplete="off">
-                    <InputContainer variant="filled">
-                        <Label htmlFor="nameInput">Plant Name</Label>
-                        <Input required type="text" name="nameInput" value={this.state.nameInput} onChange={this.handleInput} />
-                    </InputContainer>
-                    <InputContainer variant="filled">
-                        <Label htmlFor="characteristicsInput">Characteristics</Label>
-                        <Input type="text" name="characteristicsInput" value={this.state.characteristicsInput} onChange={this.handleInput} />
-                    </InputContainer>
-                    <InputContainer variant="filled">
-                        <Label htmlFor="descInput">Description</Label>
-                        <Input type="text" name="descInput" value={this.state.descInput} onChange={this.handleInput} />
-                    </InputContainer>
-                    <InputContainer variant="filled">
-                    <Label htmlFor="descInput">Water Date</Label>
-                    <DateInput
-                        name="dateInput"
-                        popperPlacement="top"
-                        dateFormat="YYYY-MM-dd"
-                        selected={this.state.dateInput}
-                        onChange={this.handleDate}
-                        customInput={<Input />}
-                    />
-                    </InputContainer>
+                        <InputContainer variant="filled">
+                            <Label htmlFor="nameInput">Plant Name</Label>
+                            <Input required type="text" name="nameInput" value={this.state.nameInput} onChange={this.handleInput} />
+                        </InputContainer>
+                        <InputContainer variant="filled">
+                            <Label htmlFor="characteristicsInput">Characteristics</Label>
+                            <Input type="text" name="characteristicsInput" value={this.state.characteristicsInput} onChange={this.handleInput} />
+                        </InputContainer>
+                        <InputContainer variant="filled">
+                            <Label htmlFor="descInput">Description</Label>
+                            <Input type="text" name="descInput" value={this.state.descInput} onChange={this.handleInput} />
+                        </InputContainer>
+                        <InputContainer variant="filled">
+                        <Label htmlFor="descInput">Water Date</Label>
+                        <DateInput
+                            name="dateInput"
+                            popperPlacement="top"
+                            dateFormat="YYYY-MM-dd"
+                            minDate={this.state.minDate}
+                            selected={this.state.dateInput}
+                            onChange={this.handleDate}
+                            customInput={<Input />}
+                        />
+                        </InputContainer>
+                        <SubmitButton type="submit">{this.props.addingPlant ? <LoadingSpinner size="28" /> : 'Add Plant'}</SubmitButton>
                     </Form>
                 </PlantBox>
 
@@ -156,4 +173,10 @@ const LoadingSpinner = styled(CircularProgress)`
     }
 `; 
 
-export default connect(null, { })(withTheme(PlantForm));
+const mapStateToProps = state => {
+    return {
+        addingPlant: state.plantsReducer.addingPlant
+    }
+}
+
+export default connect(mapStateToProps, { addPlant })(withTheme(PlantForm));

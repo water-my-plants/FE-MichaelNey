@@ -27,10 +27,6 @@ class PopulateUser extends React.Component {
                 this.props.addNotifHelper({message: 'Your session has expired.'}, 'error')
                 return true;
             }
-        } else {
-            this.props.userLogout();
-            this.props.history.push('/login');
-            return true;
         }
     }
 

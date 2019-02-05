@@ -14,7 +14,8 @@ class Navigation extends React.Component {
                     <NavLinks>
                     {!this.props.loggedIn ? null :
                         <>
-                            {/* <NavbarLink activeClassName="active" to="/plants">Plants</NavbarLink> */}
+                            <NavbarLink activeClassName="active" exact to="/plants">Plants</NavbarLink>
+                            <NavbarLink activeClassName="active" to="/plants/add">Add Plants</NavbarLink>
                         </>
                     }
                     </NavLinks>
