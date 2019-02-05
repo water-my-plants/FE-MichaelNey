@@ -5,6 +5,7 @@ import { fetchPlant } from '../../actions';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Paper from '@material-ui/core/Paper';
+import ScheduleTable from '../ScheduleTable';
 
 
 class PlantPage extends React.Component {
