@@ -37,6 +37,12 @@ class PlantForm extends React.Component {
             plantObj.description = this.state.descInput;
         }
         this.props.addPlant(plantObj);
+        this.setState({
+            nameInput: '',
+            characteristicsInput: '',
+            descInput: '',
+            dateInput: new Date(Date.now() + 99999999)
+        })
     }
 
     handleInput = (e) => {

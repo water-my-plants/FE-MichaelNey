@@ -20,8 +20,7 @@ export const fetchPlants = () => dispatch => {
         })
         .catch(err => {
             dispatch({type: FETCH_PLANTS_FAILURE});
-            addNotifHelper(err, 'error');
-            console.log(err.response);
+            dispatch(addNotifHelper(err, 'error'));
         });
 }
 
@@ -35,10 +34,10 @@ export const addPlant = (plant) => dispatch => {
     axios.post(`${process.env.REACT_APP_API}/users/${userId}/plants`, plant, { headers })
         .then(res => {
             dispatch({type: ADD_PLANT_SUCCESS, payload: res.data})
-            addNotifHelper('Successfully added plant!', 'success');
+            dispatch(addNotifHelper('Successfully added plant!', 'success'));
         })
         .catch(err => {
             dispatch({type: ADD_PLANT_FAILURE})
-            addNotifHelper(err, 'error');
+            dispatch(addNotifHelper(err, 'error'));
         })
 }
