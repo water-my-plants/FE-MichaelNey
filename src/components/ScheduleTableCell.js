@@ -5,6 +5,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import { Link }from 'react-router-dom';
+import moment from 'moment';
 
 import styled, { withTheme } from 'styled-components';
 
@@ -36,13 +37,13 @@ class ScheduleTableCell extends React.Component {
                     <ModalBox>
                         <h3>Are You Sure You Want To Delete This Watering Schedule?</h3>
                         <ModalButton no  onClick={this.toggleModal}>No</ModalButton>
-                        <ModalButton yes  onClick={e => this.deleteSchedule(this.props.plant.id)}>Yes</ModalButton>
+                        <ModalButton yes  >Yes</ModalButton> 
+                        {/* onClick={e => this.deleteSchedule(this.props.plant.id)} for yes button */}
                     </ModalBox>
                 </DeleteModal>
-                <Cell align="left">{this.props.plant.name}</Cell>
-                <Cell align="center">{this.props.plant.characteristics ? `${this.props.plant.characteristics}` : <LightText>N/A</LightText>}</Cell>
-                <Cell align="center">{this.props.plant.description ? `${this.props.plant.description}` : <LightText>N/A</LightText>}</Cell>
-                <Cell align="right"><ActionButton edit><Link to={`/plants/${this.props.plant.id}`}><i className="fas fa-edit"></i></Link></ActionButton><ActionButton delete onClick={this.toggleModal}><i className="fas fa-times-circle"></i></ActionButton></Cell>
+                <Cell align="left">{this.props.schedule.watering_time}</Cell>
+                <Cell align="center">{moment(this.props.schedule.watering_time).fromNow()}</Cell>
+                <Cell align="right"><ActionButton edit><Link to={`/plants/`}><i className="fas fa-edit"></i></Link></ActionButton><ActionButton delete onClick={this.toggleModal}><i className="fas fa-times-circle"></i></ActionButton></Cell>
             </TableRow> 
         )
     }

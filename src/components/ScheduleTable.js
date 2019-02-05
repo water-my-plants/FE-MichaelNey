@@ -8,8 +8,26 @@ import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import ScheduleTableCell from './ScheduleTableCell';
-
+import Dialog from '@material-ui/core/Dialog';
+import ScheduleForm from './ScheduleForm';
 class ScheduleTable extends React.Component {
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            modalOpen: false
+        }
+    }
+
+    toggleModal = () => {
+        this.setState(prevState => {
+            return {
+                modalOpen: !prevState.modalOpen
+            }
+        });
+    }
+    
   render() {
 
     return (
@@ -24,17 +42,38 @@ class ScheduleTable extends React.Component {
             </Head>
             <TableBody>
                 {/* If we have no plants, we will display the table, with the first and only cell being a message stating that they have no plants, but offering a link for them to add one! If there are plants, we simply map over them to display a table row for each plant! */}
-                {this.props.plants.length < 1 ? <><TableRow><Cell align="left">{''}</Cell><Cell align="center"><h3>You don't have any watering schedules for this plant!</h3></Cell><Cell align="center"><h3><Link to="/plants/add">Add one!</Link></h3></Cell></TableRow></> :
-                    this.props.plants.map(p => {
-                        return  <ScheduleTableCell deleteSchedule={this.props.deleteSchedule} key={p.id} plant={p} />
+                {this.props.schedule.length < 1 ? <><TableRow><Cell align="left">{''}</Cell><Cell align="center"><h3>You don't have any watering schedules for this plant!</h3><h3><ToggleModalSpan onClick={this.toggleModal}>Add one!</ToggleModalSpan></h3></Cell></TableRow></> :
+                    this.props.schedule.map(p => {
+                        return  <ScheduleTableCell  key={p.id} plant={p} /> //deleteSchedule={this.props.deleteSchedule}
                     })
                 }
             </TableBody>
         </TableContainer>
+        <ScheduleFormModal open={this.state.modalOpen}>
+            <ScheduleForm toggleModal={this.toggleModal} />
+        </ScheduleFormModal>
       </TablePaper>
     )
   }
 }
+
+const ToggleModalSpan = styled.span`
+    color: ${props => props.theme.primaryLight};
+    text-decoration: underline;
+    transition: .3s all;
+    &:hover {
+        cursor: pointer;
+        color: ${props => props.theme.primary};
+    }
+`;
+
+const ScheduleFormModal = styled(Dialog)`
+    && {
+        font-size: 1.6rem;
+        padding: 12px;
+        text-align: center;
+    }
+`;
 
 const TablePaper = styled(Paper)`
     width: 95%;

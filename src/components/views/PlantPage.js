@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
-import { fetchPlant } from '../../actions';
+import { fetchPlant, fetchSchedule } from '../../actions';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Paper from '@material-ui/core/Paper';
@@ -19,6 +19,7 @@ class PlantPage extends React.Component {
 
     componentDidMount() {
         this.props.fetchPlant(this.props.match.params.id);
+        this.props.fetchSchedule(this.props.match.params.id);
     }
 
     render() {
@@ -40,6 +41,7 @@ class PlantPage extends React.Component {
                     </PlantInfo>
                     }</>
                 }
+                {!this.props.fetchingSchedule && <ScheduleTable schedule={this.props.waterSchedule} /> }
                 
             </div>
         )
@@ -99,8 +101,10 @@ const mapStateToProps = state => {
     return {
         plants: state.plantsReducer.plants,
         fetchingPlant: state.plantsReducer.fetchingPlant,
-        lastFetchedPlant: state.plantsReducer.lastFetchedPlant
+        lastFetchedPlant: state.plantsReducer.lastFetchedPlant,
+        waterSchedule: state.scheduleReducer.waterSchedule,
+        fetchingSchedule: state.scheduleReducer.fetchingSchedule
     }
 }
 
-export default connect(mapStateToProps, { fetchPlant })(PlantPage);
+export default connect(mapStateToProps, { fetchPlant, fetchSchedule })(PlantPage);
