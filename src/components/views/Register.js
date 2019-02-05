@@ -96,6 +96,7 @@ class Register extends React.Component {
                         <InputContainer variant="filled">
                             <Label htmlFor="phoneInput">Phone</Label>
                             <Input required type="tel" name="phoneInput" value={this.state.phoneInput} onChange={this.handleInput} inputComponent={PhoneInput} />
+                            <HelperText>Phone number must include country code. Example US number: +13609554732</HelperText>
                         </InputContainer>
                         <InputContainer variant="filled">
                             <Label htmlFor="passInput">Password</Label>
@@ -164,6 +165,14 @@ const LoginBox = styled(Card)`
     @media (max-width: ${props => props.theme.small}) {
         width: 98%;
     }
+`;
+
+const HelperText = styled.p`
+    font-size: 1.4rem;
+    text-decoration: none;
+    color: rgba(0, 0, 0, .5);
+    margin: 0 auto;
+    padding-top: 6px;
 `;
 
 const LoginLink = styled(Link)`
