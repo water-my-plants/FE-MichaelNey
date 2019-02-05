@@ -79,6 +79,8 @@ const LoginBox = styled(Card)`
         color: ${props => props.theme.primary};
     }
 
+    
+
     @media (max-width: ${props => props.theme.small}) {
         width: 98%;
     }

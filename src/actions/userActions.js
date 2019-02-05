@@ -11,6 +11,7 @@ export const USER_REGISTER_FAILURE = 'USER_REGISTER_FAILURE';
 export const USER_LOGOUT = 'USER_LOGOUT';
 export const USER_RETURN_START = 'USER_RETURN_START';
 export const USER_RETURN_SUCCESS = 'USER_RETURN_SUCCESS';
+export const USER_RETURN_FAILURE = 'USER_RETURN_FAILURE';
 
 export const userLogin = (username, password) => dispatch => {
     let body = {
@@ -66,5 +67,9 @@ export const userLoad = (url, token) => dispatch => {
     };
     axios.get(url, { headers })
             .then(res => dispatch({type: USER_RETURN_SUCCESS, payload: res.data}))
-            .catch(err => userLogout());
+            .catch(err => {
+                dispatch(addNotifHelper('Session expired. Please log in again.', 'error'));
+                dispatch({type: USER_RETURN_FAILURE})
+                userLogout();
+            });
 }

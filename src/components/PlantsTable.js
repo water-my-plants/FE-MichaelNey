@@ -7,7 +7,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import moment from 'moment';
+import PlantTableCell from './PlantTableCell';
 
 class PlantsTable extends React.Component {
   render() {
@@ -20,43 +20,22 @@ class PlantsTable extends React.Component {
                     <Cell align="left">Plant</Cell>
                     <Cell align="center">Characteristics</Cell>
                     <Cell align="center">Description</Cell>
-                    <Cell align="right">Next Water</Cell>
+                    <Cell align="right">Actions</Cell>
                 </TableRow>
             </Head>
             <TableBody>
                 {/* If we have no plants, we will display the table, with the first and only cell being a message stating that they have no plants, but offering a link for them to add one! If there are plants, we simply map over them to display a table row for each plant! */}
                 {this.props.plants.length < 1 ? <><TableRow><Cell align="left">{''}</Cell><Cell align="center"><h3>You don't have any plants!</h3></Cell><Cell align="center"><h3><Link to="/plants/add">Add one!</Link></h3></Cell></TableRow></> :
                     this.props.plants.map(p => {
-                        return  <TableRow key={p.id}>
-                                    <Cell align="left">{p.name}</Cell>
-                                    <Cell align="center">{p.characteristics ? `${p.characteristics}` : <LightText>N/A</LightText>}</Cell>
-                                    <Cell align="center">{p.description ? `${p.description}` : <LightText>N/A</LightText>}</Cell>
-                                    <Cell align="right">{p.next_water ? moment(p.next_water).fromNow() : <LightText>N/A</LightText>}</Cell>
-                                </TableRow> 
+                        return  <PlantTableCell deletePlant={this.props.deletePlant} key={p.id} plant={p} />
                     })
                 }
-                 {/* <TableRow>
-                    <Cell align="left">Roses</Cell>
-                    <Cell align="center">My White roses under the sky light.</Cell>
-                    <Cell align="right">4 Hours</Cell>
-                </TableRow> 
-                {this.props.plants.map(p => {
-                    return <TableRow>
-                                <Cell align="left">Roses</Cell>
-                                <Cell align="center">My White roses under the sky light.</Cell>
-                                <Cell align="right">4 Hours</Cell>
-                            </TableRow>
-                })}  */}
             </TableBody>
         </TableContainer>
       </TablePaper>
     )
   }
 }
-
-const LightText = styled.span`
-    color: rgba(0, 0, 0, .25);
-`
 
 const TablePaper = styled(Paper)`
     width: 95%;

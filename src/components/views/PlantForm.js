@@ -9,7 +9,7 @@ import FilledInput from '@material-ui/core/FilledInput';
 import InputLabel from '@material-ui/core/InputLabel';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import DatePicker from "react-datepicker";
+import DatePicker, { } from "react-datepicker";
 import '../../datepicker.css';
 
 
@@ -17,11 +17,11 @@ class PlantForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            minDate: new Date(Date.now() + 99999999),
+            minDate: new Date(Date.now()),
             nameInput: '',
             characteristicsInput: '',
             descInput: '',
-            dateInput: new Date(Date.now() + 99999999)
+            dateInput: new Date(Date.now())
         }
     }
 
@@ -29,7 +29,6 @@ class PlantForm extends React.Component {
         e.preventDefault();
         let plantObj = {};
         plantObj.name = this.state.nameInput;
-        plantObj.next_water = moment(this.state.dateInput).format('YYYY-MM-DD');
         if(this.state.characteristicsInput !== '') {
             plantObj.characteristics = this.state.characteristicsInput;
         }
@@ -40,8 +39,7 @@ class PlantForm extends React.Component {
         this.setState({
             nameInput: '',
             characteristicsInput: '',
-            descInput: '',
-            dateInput: new Date(Date.now() + 99999999)
+            descInput: ''
         })
     }
 
@@ -58,6 +56,7 @@ class PlantForm extends React.Component {
     }
 
     render() {
+        console.log(this.state.dateInput);
         return(
             <div>
                 <PlantBox>
@@ -75,18 +74,20 @@ class PlantForm extends React.Component {
                             <Label htmlFor="descInput">Description</Label>
                             <Input type="text" name="descInput" value={this.state.descInput} onChange={this.handleInput} />
                         </InputContainer>
-                        <InputContainer variant="filled">
-                        <Label htmlFor="descInput">Water Date</Label>
-                        <DateInput
-                            name="dateInput"
-                            popperPlacement="top"
-                            dateFormat="YYYY-MM-dd"
-                            minDate={this.state.minDate}
-                            selected={this.state.dateInput}
-                            onChange={this.handleDate}
-                            customInput={<Input />}
-                        />
-                        </InputContainer>
+                        {/* <InputContainer variant="filled">
+                            <Label htmlFor="descInput">Water Time</Label>
+                            <DateInput
+                                name="dateInput"
+                                popperPlacement="top"
+                                dateFormat="MMMM d, yyyy h:mm aa"
+                                showTimeSelect
+                                timeIntervals={15}
+                                minDate={this.state.minDate}
+                                selected={this.state.dateInput}
+                                onChange={this.handleDate}
+                                customInput={<Input />}
+                            />
+                        </InputContainer> */}
                         <SubmitButton type="submit">{this.props.addingPlant ? <LoadingSpinner size="28" /> : 'Add Plant'}</SubmitButton>
                     </Form>
                 </PlantBox>

@@ -43,6 +43,7 @@ class PopulateUser extends React.Component {
 }
 
 const LoadingContainer = styled.div`
+    display: none;  
     position: absolute;
     width: 100vw;
     height: 100vh;
@@ -54,6 +55,7 @@ const LoadingContainer = styled.div`
 
 const LoadingSpinner = styled(CircularProgress)`
     && {
+        display: none;  
         height: 156px;
         width: 156px;
         color: ${props => props.theme.primaryDark};

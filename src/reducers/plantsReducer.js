@@ -2,15 +2,24 @@ import {
     FETCH_PLANTS_START,
     FETCH_PLANTS_SUCCESS,
     FETCH_PLANTS_FAILURE,
+    FETCH_PLANT_START,
+    FETCH_PLANT_SUCCESS,
+    FETCH_PLANT_FAILURE,
     ADD_PLANT_START,
     ADD_PLANT_SUCCESS,
-    ADD_PLANT_FAILURE
+    ADD_PLANT_FAILURE,
+    DELETE_PLANT_SUCCESS,
+    DELETE_PLANT_FAILURE
 } from '../actions';
 
 const initialState = {
     plants: [],
     fetchingPlants: false,
-    addingPlant: false
+    fetchingPlant: false,
+    fetchingSchedule: false,
+    addingPlant: false,
+    addingSchedule: false,
+    lastFetchedPlant: null
 }
 
 const plantsReducer = (state = initialState, action) => {
@@ -32,6 +41,28 @@ const plantsReducer = (state = initialState, action) => {
                 fetchingPlants: false,
                 plants: []
             }
+        case FETCH_PLANT_START:
+            return {
+                ...state,
+                fetchingPlant: true,
+                lastFetchedPlant: null
+            }
+        case FETCH_PLANT_SUCCESS:
+            return {
+                ...state,
+                fetchingPlant: false,
+                lastFetchedPlant: action.payload,
+                plants: [
+                    ...state.plants.filter(p => p.id !== action.payload.id),
+                    action.payload
+                ]
+            }
+        case FETCH_PLANT_FAILURE:
+            return { 
+                ...state,
+                fetchingPlant: false,
+                lastFetchedPlant: 'error'
+            }
         case ADD_PLANT_START:
             return {
                 ...state,
@@ -50,6 +81,15 @@ const plantsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 addingPlant: false
+            }
+        case DELETE_PLANT_SUCCESS:
+            return {
+                ...state,
+                plants: state.plants.filter(f => f.id !== action.payload)
+            }
+        case DELETE_PLANT_FAILURE: 
+            return {
+                ...state
             }
         default:
             return {
