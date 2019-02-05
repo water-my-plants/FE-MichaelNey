@@ -9,7 +9,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import '../../datepicker.css';
 
 
 class PlantForm extends React.Component {
@@ -59,7 +59,7 @@ class PlantForm extends React.Component {
                     <DateInput
                         name="dateInput"
                         popperPlacement="top"
-                        dateFormat="YYYY-MM-DD"
+                        dateFormat="YYYY-MM-dd"
                         selected={this.state.dateInput}
                         onChange={this.handleDate}
                         customInput={<Input />}
