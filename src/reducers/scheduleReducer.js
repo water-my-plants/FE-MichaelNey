@@ -2,11 +2,15 @@ import {
     FETCH_SCHEDULE_START,
     FETCH_SCHEDULE_SUCCESS,
     FETCH_SCHEDULE_FAILURE,
+    ADD_SCHEDULE_START,
+    ADD_SCHEDULE_SUCCESS,
+    ADD_SCHEDULE_FAILURE
 } from '../actions';
 
 const initialState = {
     waterSchedule: [],
-    fetchingSchedule: false
+    fetchingSchedule: false,
+    addingSchedule: false
 };
 
 const scheduleReducer = (state = initialState, action) => {
@@ -27,6 +31,21 @@ const scheduleReducer = (state = initialState, action) => {
             return {
                 ...state,
                 fetchingSchedule: false
+            }
+        case ADD_SCHEDULE_START:
+            return {
+                ...state,
+                addingSchedule: true
+            }
+        case ADD_SCHEDULE_SUCCESS:
+            return {
+                ...state,
+                addingSchedule: false
+            }
+        case ADD_SCHEDULE_FAILURE:
+            return {
+                ...state,
+                addingSchedule: false
             }
         default:
             return {

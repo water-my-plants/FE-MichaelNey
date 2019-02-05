@@ -1,20 +1,28 @@
 import React from 'react';
 
 import styled, { withTheme } from 'styled-components';
-import { Link } from 'react-router-dom';
+import moment from 'moment';
 import Card from '@material-ui/core/Card';
 import FormControl from '@material-ui/core/FormControl'
 import FilledInput from '@material-ui/core/FilledInput';
 import InputLabel from '@material-ui/core/InputLabel';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import DatePicker, { } from "react-datepicker";
+import '../datepicker.css';
+import { Portal } from 'react-overlays'
 
 class ScheduleForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            userInput: '',
-            passInput: ''
+            minDate: new Date(Date.now()),
+            minDateEnd: new Date(Date.now() + 86700000),
+            dateInputStart: new Date(Date.now() + 300000),
+            dateInputEnd: new Date(Date.now() + 87300000),
+            frequency: 86400000
         }
     }
 
@@ -26,10 +34,38 @@ class ScheduleForm extends React.Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
-        
+        console.log(this.createWaterTimes());
+        // this.setState({
+        //     dateInput: new Date(Date.now())
+        // });
+    }
+
+    createWaterTimes = () => {
+        let startDate = new Date(this.state.dateInputStart).getTime();
+        let endDate = new Date(this.state.dateInputEnd).getTime();
+        let frequency = this.state.frequency;
+        let waterTimes = [];
+        let cursorTime = startDate;
+
+        for(let i = cursorTime; i < endDate; i += frequency) {
+            waterTimes.push(i);
+        }
+
+        let parsedWaterTimes = waterTimes.map(w => {
+            return moment(w).format();
+        });
+        return parsedWaterTimes;
+    }
+
+    handleDateStart = date => {
         this.setState({
-            userInput: '',
-            passInput: ''
+            dateInputStart: date
+        });
+    }
+
+    handleDateEnd = date => {
+        this.setState({
+            dateInputEnd: date
         });
     }
     
@@ -44,21 +80,79 @@ class ScheduleForm extends React.Component {
             <CloseModalBtn onClick={this.props.toggleModal}><i className="fas fa-times-circle"></i></CloseModalBtn>
             <h1>Add Schedule</h1>
             <Form onSubmit={this.handleSubmit} autoComplete="off">
+            <InputRow>
                 <InputContainer variant="filled">
-                    <Label htmlFor="userInput">Username</Label>
-                    <Input required type="text" name="userInput" value={this.state.userInput} onChange={this.handleInput} />
+                    <Label htmlFor="dateInputStart">Start Day (First Water)</Label>
+                    <DatePicker
+                        popperContainer={CalendarContainer}
+                        name="dateInputStart"
+                        popperPlacement="top"
+                        dateFormat="MMMM d, yyyy h:mm aa"
+                        showTimeSelect
+                        timeIntervals={15}
+                        minDate={this.state.minDate}
+                        selected={this.state.dateInputStart}
+                        onChange={this.handleDateStart}
+                        customInput={<Input />}
+                    />
                 </InputContainer>
                 <InputContainer variant="filled">
-                    <Label htmlFor="passInput">Password</Label>
-                    <Input required type="password" name="passInput" value={this.state.passInput} onChange={this.handleInput} />
+                    <Label htmlFor="dateInputEnd">End Day (Latest Possible Water)</Label>
+                    <DatePicker
+                        popperContainer={CalendarContainer}
+                        name="dateInputEnd"
+                        popperPlacement="top"
+                        dateFormat="MMMM d, yyyy h:mm aa"
+                        showTimeSelect
+                        timeIntervals={15}
+                        minDate={this.state.minDateEnd}
+                        selected={this.state.dateInputEnd}
+                        onChange={this.handleDateEnd}
+                        customInput={<Input />}
+                    />
                 </InputContainer>
-                {/* If we are logging in, show a loading indicator while waiting for the response. */}
-                <ScheduleAddBtn type="submit">{this.props.addingSchedule ? <LoadingSpinner size="28" /> : 'Login'}</ScheduleAddBtn>
+            </InputRow>
+                <InputContainer variant="filled">
+                    <Label htmlFor="frequency">How Often To Water</Label>
+                    <Select
+                        value={this.state.frequency}
+                        onChange={this.handleInput}
+                        input={<Input name="frequency" id="age-helper" />}
+                    >
+                        <SelectOption value={86400000}>Daily</SelectOption>
+                        <SelectOption value={172800000}>Every Other Day</SelectOption>
+                    </Select>
+                </InputContainer>
+            
+            {/* If we are logging in, show a loading indicator while waiting for the response. */}
+            <ScheduleAddBtn type="submit">{this.props.addingSchedule ? <LoadingSpinner size="28" /> : 'Add To Schedule'}</ScheduleAddBtn>
             </Form>
         </ScheduleFormBox>
         )
     }
 }
+
+const CalendarContainer = ({children}) => {
+    const el = document.getElementById('calendar-portal')
+  
+    return (
+      <Portal container={el}>
+        {children}
+      </Portal>
+    )
+}
+
+const SelectOption = styled(MenuItem)`
+    && {
+        font-size: 1.6rem;
+    }
+`;
+
+const InputRow = styled.div`
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+`;
 
 const ScheduleFormBox = styled(Card)`
     position: relative;
@@ -93,16 +187,6 @@ const CloseModalBtn = styled.div`
     }
 `;
 
-const RegisterLink = styled(Link)`
-    font-size: 1.4rem;
-    text-decoration: underline;
-    color: rgba(0, 0, 0, .5);
-    margin: 6px auto;
-    &:visited {
-        color: rgba(0, 0, 0, .5);
-    }
-`;
-
 const Label = styled(InputLabel)`
     &&& { /* &&& is needed to be more specific than Material UI classes. */
         font-size: 1.6rem;
@@ -128,6 +212,7 @@ const InputContainer = styled(FormControl)`
 
 const Input = styled(FilledInput)`
     && {
+        width: 99%;
         font-size: 1.8rem;
         &::after {
             border-bottom: 2px solid ${props => props.theme.primary};
