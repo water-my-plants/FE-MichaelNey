@@ -175,6 +175,14 @@ const LoginBox = styled(Card)`
     }
 `;
 
+const HelperText = styled.p`
+    font-size: 1.4rem;
+    text-decoration: none;
+    color: rgba(0, 0, 0, .5);
+    margin: 0 auto;
+    padding-top: 6px;
+`;
+
 const LoginLink = styled(Link)`
     font-size: 1.4rem;
     text-decoration: underline;
