@@ -7,24 +7,22 @@ import FilledInput from '@material-ui/core/FilledInput';
 import InputLabel from '@material-ui/core/InputLabel';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import MaskedInput from 'react-text-mask';
 
-class EditProfileForm extends React.Component {
+class EditPlantForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            userInput: '',
-            emailInput: '',
-            phoneInput: ''
+            nameInput: '',
+            locationInput: '',
+            descriptionInput: ''
         }
     }
 
     componentDidMount() {
-        console.log(this.props)
         this.setState({
-            userInput: this.props.username,
-            emailInput: this.props.email,
-            phoneInput: this.props.phone,
+            nameInput: this.props.plant.name,
+            locationInput: this.props.plant.location,
+            descriptionInput: this.props.plant.description,
         })
     }
 
@@ -37,65 +35,39 @@ class EditProfileForm extends React.Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
-        let userObj = {
-            username: this.state.userInput,
-            email: this.state.emailInput,
-            phone: this.state.phoneInput
-        }
-        this.props.updateUser(this.props.userId, userObj);
+        let plantObj = {
+            name: this.state.nameInput,
+            location: this.state.locationInput,
+            description: this.state.descriptionInput
+        };
+        this.props.updatePlant(this.props.plant.id, plantObj);
     }
 
     render() {
-        
         return (
-        <EditProfileFormBox>
+        <EditPlantFormBox>
             <CloseModalBtn onClick={this.props.toggleModal}><i className="fas fa-times-circle"></i></CloseModalBtn>
-            <h1>Edit Profile</h1>
+            <h1>Edit Plant</h1>
             <Form onSubmit={this.handleSubmit} autoComplete="off">
                 <InputContainer variant="filled">
-                    <Label htmlFor="userInput">Username</Label>
-                    <Input required type="text" name="userInput" value={this.state.userInput} onChange={this.handleInput} />
+                    <Label htmlFor="nameInput">Name *</Label>
+                    <Input required type="text" name="nameInput" value={this.state.nameInput} onChange={this.handleInput} />
                 </InputContainer>
                 <InputContainer variant="filled">
-                    <Label htmlFor="emailInput">Email</Label>
-                    <Input required type="email" name="emailInput" value={this.state.emailInput} onChange={this.handleInput} />
+                    <Label htmlFor="locationInput">Location</Label>
+                    <Input type="text" name="locationInput" value={this.state.locationInput} onChange={this.handleInput} />
                 </InputContainer>
                 <InputContainer variant="filled">
-                    <Label htmlFor="phoneInput">Phone</Label>
-                    <Input required type="tel" name="phoneInput" value={this.state.phoneInput} onChange={this.handleInput} inputComponent={PhoneInput} />
-                    <HelperText>Phone number must include country code. Example US number: +13609554732</HelperText>
+                    <Label htmlFor="descriptionInput">Description</Label>
+                    <Input type="text" name="descriptionInput" value={this.state.descriptionInput} onChange={this.handleInput} />
                 </InputContainer>
                 {/* If we are logging in, show a loading indicator while waiting for the response. */}
-                <EditBtn type="submit">{this.props.updatingUser ? <LoadingSpinner size="28" /> : 'Edit Profile'}</EditBtn>
+                <EditBtn type="submit">{this.props.updatingPlant ? <LoadingSpinner size="28" /> : 'Edit Plant'}</EditBtn>
             </Form>
-        </EditProfileFormBox>
+        </EditPlantFormBox>
         )
     }
 }
-
-const PhoneInput = (props) => {
-    const { inputRef, ...other } = props;
-    //This component is used in our Phone input, to keep  E.164 Phone Number format compliance for our Twilio API.
-    return (
-        <MaskedInput
-            {...other}
-            guide={false}
-            ref={ref => {
-            inputRef(ref ? ref.inputElement : null);
-            }}
-            mask={['+', /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/]}
-        />
-    )
-}
-
-
-const HelperText = styled.p`
-    font-size: 1.4rem;
-    text-decoration: none;
-    color: rgba(0, 0, 0, .5);
-    margin: 0 auto;
-    padding-top: 6px;
-`;
 
 const EditBtn = styled(Button)`
     && {
@@ -111,7 +83,7 @@ const EditBtn = styled(Button)`
 `;
 
 
-const EditProfileFormBox = styled(Card)`
+const EditPlantFormBox = styled(Card)`
     position: relative;
     width: 600px;
     margin: 0 auto;
@@ -185,4 +157,4 @@ const LoadingSpinner = styled(CircularProgress)`
     }
 `; 
 
-export default withTheme(withRouter(EditProfileForm));
+export default withTheme(withRouter(EditPlantForm));

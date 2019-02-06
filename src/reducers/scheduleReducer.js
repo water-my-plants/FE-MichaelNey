@@ -4,13 +4,17 @@ import {
     FETCH_SCHEDULE_FAILURE,
     ADD_SCHEDULE_START,
     ADD_SCHEDULE_SUCCESS,
-    ADD_SCHEDULE_FAILURE
+    ADD_SCHEDULE_FAILURE,
+    DELETE_SCHEDULE_START,
+    DELETE_SCHEDULE_SUCCESS,
+    DELETE_SCHEDULE_FAILURE
 } from '../actions';
 
 const initialState = {
     waterSchedule: [],
     fetchingSchedule: false,
-    addingSchedule: false
+    addingSchedule: false,
+    deletingSchedule: false
 };
 
 const scheduleReducer = (state = initialState, action) => {
@@ -47,6 +51,22 @@ const scheduleReducer = (state = initialState, action) => {
             return {
                 ...state,
                 addingSchedule: false
+            }
+        case DELETE_SCHEDULE_START:
+            return {
+                ...state,
+                deletingSchedule: true
+            }
+        case DELETE_SCHEDULE_SUCCESS:
+            return {
+                ...state,
+                deletingSchedule: false,
+                waterSchedule: []
+            }
+        case DELETE_SCHEDULE_FAILURE:
+            return {
+                ...state,
+                deletingSchedule: false
             }
         default:
             return {

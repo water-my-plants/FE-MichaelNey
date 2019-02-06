@@ -53,24 +53,20 @@ export const addSchedule = (id, times) => dispatch => {
         });
 }
 
-//Awaiting DELETE route for Plant Water Schedules.
-// export const deleteSchedule = (id) => {
-//     dispatch({type: DELETE_SCHEDULE_START});
-//     let token = localStorage.getItem('token');
-//     let headers = {
-//         'authorization': token
-//     }
-//     axios.get(`${process.env.REACT_APP_API}/plants/${id}/schedule`, { headers })
-//         .then(res => {
-//             dispatch({type: DELETE_SCHEDULE_SUCCESS, payload: res.data});
-//         })
-//         .catch(err => {
-//             dispatch({type: DELETE_SCHEDULE_FAILURE});
-//             //If there are no schedules for the plant, server responds with 400 status code. If it does that, we know to just display an empty schedule table. Otherwise, give an actual error notification popup to the user.
-//             if(err.response.status === 400) {
-//                 dispatch({type: DELETE_SCHEDULE_SUCCESS, payload: []});
-//             } else {
-//                 dispatch(addNotifHelper(err, 'error'));
-//             }
-//         });
-// }
+export const deleteSchedule = (id) => dispatch => {
+    dispatch({type: DELETE_SCHEDULE_START});
+    let token = localStorage.getItem('token');
+    let headers = {
+        'authorization': token
+    }
+    axios.delete(`${process.env.REACT_APP_API}/plants/${id}/schedule`, { headers })
+        .then(res => {
+            dispatch(addNotifHelper(`Deleted All Scheduled Times.`, 'success'));
+            dispatch({type: DELETE_SCHEDULE_SUCCESS});
+            fetchSchedule(id);
+        })
+        .catch(err => {
+            dispatch({type: DELETE_SCHEDULE_FAILURE});
+            dispatch(addNotifHelper(err, 'error'));
+        });
+}

@@ -16,7 +16,8 @@ class ScheduleTable extends React.Component {
         super(props);
 
         this.state = {
-            modalOpen: false
+            modalOpen: false,
+            deleteModalOpen: false      
         }
     }
 
@@ -24,6 +25,14 @@ class ScheduleTable extends React.Component {
         this.setState(prevState => {
             return {
                 modalOpen: !prevState.modalOpen
+            }
+        });
+    }
+
+    toggleDeleteModal = () => {
+        this.setState(prevState => {
+            return {
+                deleteModalOpen: !prevState.deleteModalOpen
             }
         });
     }
@@ -44,12 +53,17 @@ class ScheduleTable extends React.Component {
                 <TableRow>
                     <Cell align="left"></Cell>
                     <Cell align="center"><ScheduleAddButton onClick={this.toggleModal}>Add A Schedule</ScheduleAddButton></Cell>
-
+                    <Cell align="right"></Cell>
+                </TableRow>
+                <TableRow>
+                    <Cell align="left"></Cell>
+                    <Cell align="center"><ScheduleAddButton negative="true" onClick={this.toggleDeleteModal}>Delete Schedule</ScheduleAddButton></Cell>
+                    <Cell align="right"></Cell>
                 </TableRow>
                 {/* If we have no plants, we will display the table, with the first and only cell being a message stating that they have no plants, but offering a link for them to add one! If there are plants, we simply map over them to display a table row for each plant! */}
                 {this.props.schedule.length < 1 ? <><TableRow><Cell align="left">{''}</Cell><Cell align="center"><h3>You don't have any watering schedules for this plant!</h3><h3><ToggleModalSpan onClick={this.toggleModal}>Add one!</ToggleModalSpan></h3></Cell></TableRow></> :
                     this.props.schedule.filter(s => new Date(s).getTime() > Date.now()).sort().map(p => {
-                        return  <ScheduleTableCell key={p} time={p} /> //deleteSchedule={this.props.deleteSchedule}
+                        return  <ScheduleTableCell deleteSchedule={this.props.deleteSchedule} plantId={this.props.plantId} key={p} time={p} />
                     })
                 }
             </TableBody>
@@ -57,10 +71,44 @@ class ScheduleTable extends React.Component {
         <ScheduleFormModal open={this.state.modalOpen}>
             <ScheduleForm addingSchedule={this.props.addingSchedule} addSchedule={this.props.addSchedule} toggleModal={this.toggleModal} />
         </ScheduleFormModal>
+        <ScheduleFormModal open={this.state.deleteModalOpen}>
+            <ModalBox>
+                <h3>Are You Sure You Want To Delete All Watering Times?</h3>
+                <ModalButton no="true"  onClick={this.toggleDeleteModal}>No</ModalButton>
+                <ModalButton yes="true" onClick={e => {this.props.deleteSchedule(this.props.plantId); this.toggleDeleteModal();}}>Yes</ModalButton> 
+            </ModalBox>
+        </ScheduleFormModal>
       </TablePaper>
     )
   }
 }
+
+const ModalBox = styled(Paper)`
+    && {
+        font-size: 1.6rem;
+        padding: 12px;
+        text-align: center;
+    }
+`;
+
+const ModalButton = styled(Button)`
+    && {
+        font-size: 1.6rem;
+        width: 45%;
+        margin: 4px 8px;
+        color: white;
+        background: ${props => {
+            if(props.yes) return props.theme.error;
+            if(props.no) return props.theme.primary;
+        }};
+        &:hover {
+            background: ${props => {
+            if(props.yes) return props.theme.errorLight;
+            if(props.no) return props.theme.primaryLight;
+        }};
+        }
+    }
+`;
 
 const ToggleModalSpan = styled.span`
     color: ${props => props.theme.primaryLight};
@@ -79,9 +127,15 @@ const ScheduleAddButton = styled(Button)`
         width: 75%;
         margin: 4px auto;
         color: white;
-        background: ${props => props.theme.primaryLight};
+        background: ${props => {
+            if(props.negative) return props.theme.error;
+            return props.theme.primaryLight;
+        }};
         &:hover {
-            background: ${props => props.theme.primary};
+            background: ${props => {
+                if(props.negative) return props.theme.errorDark;
+                return props.theme.primaryDark;
+            }}
         }
     }
 `;

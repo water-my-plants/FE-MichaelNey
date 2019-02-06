@@ -4,7 +4,6 @@ import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
-import { Link }from 'react-router-dom';
 import moment from 'moment';
 
 import styled, { withTheme } from 'styled-components';
@@ -27,7 +26,7 @@ class ScheduleTableCell extends React.Component {
 
     deleteSchedule = (id) => {
         this.toggleModal();
-        // this.props.deleteSchedule(id);
+        this.props.deleteSchedule(id);
     }
 
     render() {
@@ -37,13 +36,13 @@ class ScheduleTableCell extends React.Component {
                     <ModalBox>
                         <h3>Are You Sure You Want To Delete This Watering Schedule?</h3>
                         <ModalButton no="true"  onClick={this.toggleModal}>No</ModalButton>
-                        <ModalButton yes="true"  >Yes</ModalButton> 
-                        {/* onClick={e => this.deleteSchedule(this.props.plant.id)} for yes button */}
+                        <ModalButton yes="true" onClick={e => this.deleteSchedule(this.props.plantId)}>Yes</ModalButton> 
                     </ModalBox>
                 </DeleteModal>
                 <Cell align="left">{moment(this.props.time).format('ddd, MMM, Do YYYY, h:mm:ss a')}</Cell>
                 <Cell align="center">{moment(this.props.time).fromNow()}</Cell>
-                <Cell align="right"><ActionButton edit><Link to={`/plants/`}><i className="fas fa-edit"></i></Link></ActionButton><ActionButton delete onClick={this.toggleModal}><i className="fas fa-times-circle"></i></ActionButton></Cell>
+                <Cell align="right"></Cell> 
+                {/* <ActionButton delete onClick={this.toggleModal}><i className="fas fa-times-circle"></i></ActionButton> <--- For right cell when we get single water time deletion route */}
             </TableRow> 
         )
     }
