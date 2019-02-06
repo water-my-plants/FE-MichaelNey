@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
+import ClickOutHandler from 'react-onclickout';
 import PropTypes from 'prop-types';
 
 class Navigation extends React.Component {
@@ -29,28 +30,30 @@ class Navigation extends React.Component {
 
     render() {
         return (
-            <TopBar position="static">
-                <Nav onMouseLeave={this.closeNav} >
-                    <Brand>Water My Plants <MenuExpand onClick={this.toggleNav}><i className="fas fa-bars"></i></MenuExpand></Brand>
-                    <NavLinks open={this.state.navOpen}>
-                    {!this.props.loggedIn ? null :
-                        <>
-                            <NavbarLink activeClassName="active" exact to="/plants">Plants</NavbarLink>
-                            <NavbarLink activeClassName="active" to="/plants/add">Add Plants</NavbarLink>
-                        </>
-                    }
-                    </NavLinks>
-                    <NavActions open={this.state.navOpen}>
-                        {/* If we aren't logged in, only show the Login link. Otherwise, show all the navigation options and our users profile name + link to profile */}
-                        {!this.props.loggedIn ? <><NavbarLink activeClassName="active" to="/login">Login</NavbarLink><NavbarLink activeClassName="active" to="/register">Register</NavbarLink></> :
-                        <>
-                            <NavbarLink activeClassName="active" to="/profile">{this.props.username} <i className="fas fa-user-circle"></i></NavbarLink>
-                            <NavbarLink activeClassName="active" to="/logout">Logout <i className="fas fa-sign-out-alt"></i></NavbarLink>
-                        </>
+            <ClickOutHandler onClickOut={this.closeNav}>
+                <TopBar position="static">
+                    <Nav >
+                        <Brand>Water My Plants <MenuExpand onClick={this.toggleNav}><i className="fas fa-bars"></i></MenuExpand></Brand>
+                        <NavLinks open={this.state.navOpen}>
+                        {!this.props.loggedIn ? null :
+                            <>
+                                <NavbarLink activeClassName="active" exact to="/plants">Plants</NavbarLink>
+                                <NavbarLink activeClassName="active" to="/plants/add">Add Plants</NavbarLink>
+                            </>
                         }
-                    </NavActions>
-                </Nav>
-            </TopBar>
+                        </NavLinks>
+                        <NavActions open={this.state.navOpen}>
+                            {/* If we aren't logged in, only show the Login link. Otherwise, show all the navigation options and our users profile name + link to profile */}
+                            {!this.props.loggedIn ? <><NavbarLink activeClassName="active" to="/login">Login</NavbarLink><NavbarLink activeClassName="active" to="/register">Register</NavbarLink></> :
+                            <>
+                                <NavbarLink activeClassName="active" to="/profile">{this.props.username} <i className="fas fa-user-circle"></i></NavbarLink>
+                                <NavbarLink activeClassName="active" to="/logout">Logout <i className="fas fa-sign-out-alt"></i></NavbarLink>
+                            </>
+                            }
+                        </NavActions>
+                    </Nav>
+                </TopBar>
+            </ClickOutHandler>
         )
     }
 }
