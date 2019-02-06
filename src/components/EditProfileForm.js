@@ -8,6 +8,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import MaskedInput from 'react-text-mask';
+import PropTypes from 'prop-types';
 
 class EditProfileForm extends React.Component {
     constructor(props) {
@@ -15,12 +16,12 @@ class EditProfileForm extends React.Component {
         this.state = {
             userInput: '',
             emailInput: '',
-            phoneInput: ''
+            phoneInput: '',
+            formError: ''
         }
     }
 
     componentDidMount() {
-        console.log(this.props)
         this.setState({
             userInput: this.props.username,
             emailInput: this.props.email,
@@ -37,6 +38,7 @@ class EditProfileForm extends React.Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
+        if(!this.formValidation(this.state.phoneInput)) return;
         let userObj = {
             username: this.state.userInput,
             email: this.state.emailInput,
@@ -45,8 +47,25 @@ class EditProfileForm extends React.Component {
         this.props.updateUser(this.props.userId, userObj);
     }
 
+    clearFormError = () => {
+        this.setState({
+            formError: ''
+        });
+    }
+
+    formValidation = (phone) => {
+        //check if phone number matches E.164 phone number format - To match Twilio API phone number specifications.
+        let phoneRegex = RegExp(/^\+?[1-9]\d{1,14}$/);
+        if(phoneRegex.test(phone) === false) {
+            this.setState({
+                formError: 'Phone number must include country code. Example US number: +13609554732'
+            })
+            return false;
+        }
+        return true;
+    }
+
     render() {
-        
         return (
         <EditProfileFormBox>
             <CloseModalBtn onClick={this.props.toggleModal}><i className="fas fa-times-circle"></i></CloseModalBtn>
@@ -65,6 +84,7 @@ class EditProfileForm extends React.Component {
                     <Input required type="tel" name="phoneInput" value={this.state.phoneInput} onChange={this.handleInput} inputComponent={PhoneInput} />
                     <HelperText>Phone number must include country code. Example US number: +13609554732</HelperText>
                 </InputContainer>
+                {this.state.formError !== '' && <FormError onClick={this.clearFormError}>{this.state.formError}</FormError>}
                 {/* If we are logging in, show a loading indicator while waiting for the response. */}
                 <EditBtn type="submit">{this.props.updatingUser ? <LoadingSpinner size="28" /> : 'Edit Profile'}</EditBtn>
             </Form>
@@ -95,6 +115,22 @@ const HelperText = styled.p`
     color: rgba(0, 0, 0, .5);
     margin: 0 auto;
     padding-top: 6px;
+`;
+
+const FormError = styled.div`
+    position: relative;
+    border: 1px solid ${props => props.theme.error};
+    background: ${props => props.theme.error};
+    color: white;
+    font-size: 1.6rem;
+    border-radius: 4px;
+    padding: 4px;
+    width: 100%;
+    margin-top: 12px;
+    text-align: center;
+    &:hover {
+        cursor: pointer;
+    }
 `;
 
 const EditBtn = styled(Button)`
@@ -183,6 +219,15 @@ const LoadingSpinner = styled(CircularProgress)`
         width: 28px;
         color: white;
     }
-`; 
+`;
+
+EditProfileForm.propTypes = {
+    email: PropTypes.string.isRequired,
+    phone: PropTypes.string.isRequired,
+    toggleModal: PropTypes.func.isRequired,
+    updateUser: PropTypes.func.isRequired,
+    userId: PropTypes.number.isRequired,
+    username: PropTypes.string.isRequired
+}
 
 export default withTheme(withRouter(EditProfileForm));

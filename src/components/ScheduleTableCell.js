@@ -5,8 +5,8 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import moment from 'moment';
-
 import styled, { withTheme } from 'styled-components';
+import PropTypes from 'prop-types';
 
 class ScheduleTableCell extends React.Component {
     constructor(props) {
@@ -24,9 +24,9 @@ class ScheduleTableCell extends React.Component {
         });
     }
 
-    deleteSchedule = (id) => {
+    deleteSchedule = (plantId, scheduleId) => {
         this.toggleModal();
-        this.props.deleteSchedule(id);
+        this.props.deleteSingleSchedule(plantId, scheduleId);
     }
 
     render() {
@@ -34,15 +34,14 @@ class ScheduleTableCell extends React.Component {
             <TableRow>
                 <DeleteModal open={this.state.modalOpen}>
                     <ModalBox>
-                        <h3>Are You Sure You Want To Delete This Watering Schedule?</h3>
+                        <h3>Are You Sure You Want To Delete This Watering Time?</h3>
                         <ModalButton no="true"  onClick={this.toggleModal}>No</ModalButton>
-                        <ModalButton yes="true" onClick={e => this.deleteSchedule(this.props.plantId)}>Yes</ModalButton> 
+                        <ModalButton yes="true" onClick={e => this.deleteSchedule(this.props.plantId, this.props.schedule.id)}>Yes</ModalButton> 
                     </ModalBox>
                 </DeleteModal>
-                <Cell align="left">{moment(this.props.time).format('ddd, MMM, Do YYYY, h:mm:ss a')}</Cell>
-                <Cell align="center">{moment(this.props.time).fromNow()}</Cell>
-                <Cell align="right"></Cell> 
-                {/* <ActionButton delete onClick={this.toggleModal}><i className="fas fa-times-circle"></i></ActionButton> <--- For right cell when we get single water time deletion route */}
+                <Cell align="left">{moment(this.props.schedule.watering_time).format('ddd, MMM, Do YYYY, h:mm:ss a')}</Cell>
+                <Cell align="center">{moment(this.props.schedule.watering_time).fromNow()}</Cell>
+                <Cell align="right"><ActionButton delete onClick={this.toggleModal}><i className="fas fa-times-circle"></i></ActionButton></Cell> 
             </TableRow> 
         )
     }
@@ -119,5 +118,14 @@ const ActionButton = styled.span`
         }
     }
 `;
+
+ScheduleTableCell.propTypes = {
+    plantId: PropTypes.number.isRequired, 
+    deleteSingleSchedule: PropTypes.func.isRequired,
+    schedule: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        watering_time: PropTypes.string.isRequired
+    }).isRequired
+}
 
 export default withTheme(ScheduleTableCell);

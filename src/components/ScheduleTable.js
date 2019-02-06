@@ -10,6 +10,9 @@ import ScheduleTableCell from './ScheduleTableCell';
 import Dialog from '@material-ui/core/Dialog';
 import ScheduleForm from './ScheduleForm';
 import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import PropTypes from 'prop-types';
+
 class ScheduleTable extends React.Component {
 
     constructor(props) {
@@ -38,7 +41,6 @@ class ScheduleTable extends React.Component {
     }
     
   render() {
-
     return (
       <TablePaper>
         <TableContainer>
@@ -57,13 +59,17 @@ class ScheduleTable extends React.Component {
                 </TableRow>
                 <TableRow>
                     <Cell align="left"></Cell>
-                    <Cell align="center"><ScheduleAddButton negative="true" onClick={this.toggleDeleteModal}>Delete Schedule</ScheduleAddButton></Cell>
+                    <Cell align="center">
+                        <ScheduleAddButton negative="true" onClick={this.toggleDeleteModal}>
+                            {this.props.deletingSchedule ? <LoadingSpinner size="28" /> : 'Delete Schedule'}
+                        </ScheduleAddButton>
+                    </Cell>
                     <Cell align="right"></Cell>
                 </TableRow>
                 {/* If we have no plants, we will display the table, with the first and only cell being a message stating that they have no plants, but offering a link for them to add one! If there are plants, we simply map over them to display a table row for each plant! */}
                 {this.props.schedule.length < 1 ? <><TableRow><Cell align="left">{''}</Cell><Cell align="center"><h3>You don't have any watering schedules for this plant!</h3><h3><ToggleModalSpan onClick={this.toggleModal}>Add one!</ToggleModalSpan></h3></Cell></TableRow></> :
-                    this.props.schedule.filter(s => new Date(s).getTime() > Date.now()).sort().map(p => {
-                        return  <ScheduleTableCell deleteSchedule={this.props.deleteSchedule} plantId={this.props.plantId} key={p} time={p} />
+                    this.props.schedule.filter(s => new Date(s.watering_time).getTime() > Date.now()).sort().map(p => {
+                        return  <ScheduleTableCell key={p.id} deleteSingleSchedule={this.props.deleteSingleSchedule} plantId={this.props.plantId} schedule={p} />
                     })
                 }
             </TableBody>
@@ -90,6 +96,14 @@ const ModalBox = styled(Paper)`
         text-align: center;
     }
 `;
+
+const LoadingSpinner = styled(CircularProgress)`
+    && {
+        height: 28px;
+        width: 28px;
+        color: white;
+    }
+`; 
 
 const ModalButton = styled(Button)`
     && {
@@ -174,5 +188,14 @@ const Cell = styled(TableCell)`
     }
 `;
 
+ScheduleTable.propTypes = {
+    addSchedule: PropTypes.func.isRequired,
+    addingSchedule: PropTypes.bool.isRequired,
+    deleteSchedule: PropTypes.func.isRequired,
+    deleteSingleSchedule: PropTypes.func.isRequired,
+    deletingSchedule: PropTypes.bool.isRequired,
+    plantId: PropTypes.number.isRequired,
+    schedule: PropTypes.array.isRequired
+}
 
 export default withTheme(ScheduleTable);

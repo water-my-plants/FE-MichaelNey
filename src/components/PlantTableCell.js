@@ -5,8 +5,8 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import { Link }from 'react-router-dom';
-
 import styled, { withTheme } from 'styled-components';
+import PropTypes from 'prop-types';
 
 class PlantTableCell extends React.Component {
     constructor(props) {
@@ -122,5 +122,17 @@ const ActionButton = styled.span`
         }
     }
 `;
+
+PlantTableCell.propTypes = {
+    deletePlant: PropTypes.func.isRequired,
+    plant: PropTypes.shape({
+        description: PropTypes.string,
+        id: PropTypes.number.isRequired,
+        last_water: PropTypes.any,
+        location: PropTypes.string,
+        name: PropTypes.string.isRequired,
+        user_id: PropTypes.number.isRequired
+    }).isRequired
+}
 
 export default withTheme(PlantTableCell);

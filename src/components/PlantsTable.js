@@ -8,10 +8,9 @@ import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import PlantTableCell from './PlantTableCell';
+import PropTypes from 'prop-types';
 
-class PlantsTable extends React.Component {
-  render() {
-
+const PlantsTable = props => {
     return (
       <TablePaper>
         <TableContainer>
@@ -25,16 +24,15 @@ class PlantsTable extends React.Component {
             </Head>
             <TableBody>
                 {/* If we have no plants, we will display the table, with the first and only cell being a message stating that they have no plants, but offering a link for them to add one! If there are plants, we simply map over them to display a table row for each plant! */}
-                {this.props.plants.length < 1 ? <><TableRow><Cell align="left">{''}</Cell><Cell align="center"><h3>You don't have any plants!</h3></Cell><Cell align="center"><h3><Link to="/plants/add">Add one!</Link></h3></Cell></TableRow></> :
-                    this.props.plants.map(p => {
-                        return  <PlantTableCell deletePlant={this.props.deletePlant} key={p.id} plant={p} />
+                {props.plants.length < 1 ? <><TableRow><Cell align="left">{''}</Cell><Cell align="center"><h3>You don't have any plants!</h3></Cell><Cell align="center"><h3><Link to="/plants/add">Add one!</Link></h3></Cell></TableRow></> :
+                    props.plants.map(p => {
+                        return  <PlantTableCell deletePlant={props.deletePlant} key={p.id} plant={p} />
                     })
                 }
             </TableBody>
         </TableContainer>
       </TablePaper>
     )
-  }
 }
 
 const TablePaper = styled(Paper)`
@@ -63,5 +61,16 @@ const Cell = styled(TableCell)`
     }
 `;
 
+PlantsTable.propTypes = {
+    deletePlant: PropTypes.func.isRequired,
+    plants: PropTypes.arrayOf(PropTypes.shape({
+        description: PropTypes.string,
+        id: PropTypes.number.isRequired,
+        last_water: PropTypes.any,
+        location: PropTypes.string,
+        name: PropTypes.string.isRequired,
+        user_id: PropTypes.number.isRequired
+    }))
+}
 
 export default withTheme(PlantsTable);

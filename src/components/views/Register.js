@@ -1,8 +1,6 @@
 import React from 'react';
-
 import { connect } from 'react-redux';
 import { userRegister } from '../../actions';
-
 import MaskedInput from 'react-text-mask';
 import styled, { withTheme } from 'styled-components';
 import { Link } from 'react-router-dom';
@@ -12,6 +10,7 @@ import FilledInput from '@material-ui/core/FilledInput';
 import InputLabel from '@material-ui/core/InputLabel';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import PropTypes from 'prop-types';
 
 class Register extends React.Component {
     constructor(props) {
@@ -23,6 +22,18 @@ class Register extends React.Component {
             passInput: '',
             confirmPassInput: '',
             formError: ''
+        }
+    }
+
+    componentDidMount() {
+        if(this.props.loggedIn) {
+            this.props.history.push('/');
+        }
+    }
+
+    componentDidUpdate() {
+        if(this.props.loggedIn) {
+            this.props.history.push('/');
         }
     }
 
@@ -42,7 +53,6 @@ class Register extends React.Component {
 
         //check if phone number matches E.164 phone number format - To match Twilio API phone number specifications.
         let phoneRegex = RegExp(/^\+?[1-9]\d{1,14}$/);
-        console.log(phoneRegex.test(phone))
         if(phoneRegex.test(phone) === false) {
             this.setState({
                 formError: 'Phone number must include country code. Example US number: +13609554732'
@@ -77,9 +87,6 @@ class Register extends React.Component {
     }
     
     render() {
-        if(this.props.loggedIn) {
-            this.props.history.push('/');
-        }
         return (
             <div>
                 <LoginBox>
@@ -175,14 +182,6 @@ const LoginBox = styled(Card)`
     }
 `;
 
-const HelperText = styled.p`
-    font-size: 1.4rem;
-    text-decoration: none;
-    color: rgba(0, 0, 0, .5);
-    margin: 0 auto;
-    padding-top: 6px;
-`;
-
 const LoginLink = styled(Link)`
     font-size: 1.4rem;
     text-decoration: underline;
@@ -245,6 +244,16 @@ const LoadingSpinner = styled(CircularProgress)`
         color: white;
     }
 `; 
+
+Register.propTypes = {
+    loggedIn: PropTypes.bool.isRequired,
+    registered: PropTypes.oneOfType([
+        PropTypes.bool,
+        PropTypes.oneOf([null])
+    ]),
+    registering: PropTypes.bool.isRequired,
+    userRegister: PropTypes.func.isRequired
+}
 
 const mapStateToProps = (state) => {
     return {

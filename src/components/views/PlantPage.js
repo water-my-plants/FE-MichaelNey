@@ -1,14 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
-import { fetchPlant, fetchSchedule, addSchedule, deleteSchedule, updatePlant } from '../../actions';
+import { fetchPlant, fetchSchedule, addSchedule, deleteSchedule, deleteSingleSchedule, updatePlant } from '../../actions';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Paper from '@material-ui/core/Paper';
 import ScheduleTable from '../ScheduleTable';
 import EditPlantForm from '../EditPlantForm';
-
+import PropTypes from 'prop-types';
 
 class PlantPage extends React.Component {
     constructor(props) {
@@ -55,7 +55,16 @@ class PlantPage extends React.Component {
                                     <EditPlantForm plant={this.props.lastFetchedPlant} updatingPlant={this.props.updatingPlant} updatePlant={this.props.updatePlant} toggleModal={this.toggleModal} />
                                 </EditFormModal>
                             </PlantInfo>
-                            {!this.props.fetchingSchedule && <ScheduleTable plantId={this.props.lastFetchedPlant.id} addingSchedule={this.props.addingSchedule} addSchedule={this.props.addSchedule} schedule={this.props.waterSchedule} deleteSchedule={this.props.deleteSchedule} /> }
+                            {/* ScheduleTable component handles multiple loading spinners. This many props is neccessary to maintain Container/Presentational component architecture. */}
+                            {!this.props.fetchingSchedule && <ScheduleTable 
+                                                            plantId={this.props.lastFetchedPlant.id} 
+                                                            addingSchedule={this.props.addingSchedule} 
+                                                            addSchedule={this.props.addSchedule} 
+                                                            schedule={this.props.waterSchedule} 
+                                                            deleteSchedule={this.props.deleteSchedule} 
+                                                            deleteSingleSchedule={this.props.deleteSingleSchedule} 
+                                                            deletingSchedule={this.props.deletingSchedule} 
+                            /> }
                         </>
                     }</>
                     
@@ -135,15 +144,43 @@ const LoadingSpinner = styled(CircularProgress)`
     }
 `; 
 
+PlantPage.propTypes = {
+    addSchedule: PropTypes.func.isRequired,
+    addingSchedule: PropTypes.bool.isRequired,
+    deleteSchedule: PropTypes.func.isRequired,
+    deleteSingleSchedule: PropTypes.func.isRequired,
+    deletingSchedule: PropTypes.bool.isRequired,
+    fetchPlant: PropTypes.func.isRequired,
+    fetchSchedule: PropTypes.func.isRequired,
+    fetchingPlant: PropTypes.bool.isRequired,
+    fetchingSchedule: PropTypes.bool.isRequired,
+    lastFetchedPlant: PropTypes.shape({
+        description: PropTypes.string,
+        id: PropTypes.number.isRequired,
+        last_water: PropTypes.any,
+        location: PropTypes.string,
+        name: PropTypes.string.isRequired,
+        user_id: PropTypes.number.isRequired
+    }),
+    updatePlant: PropTypes.func.isRequired,
+    updatingPlant: PropTypes.bool.isRequired,
+    waterSchedule: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        watering_time: PropTypes.string.isRequired
+    }))
+}
+
 const mapStateToProps = state => {
     return {
         plants: state.plantsReducer.plants,
         fetchingPlant: state.plantsReducer.fetchingPlant,
+        updatingPlant: state.plantsReducer.updatingPlant,
         lastFetchedPlant: state.plantsReducer.lastFetchedPlant,
         waterSchedule: state.scheduleReducer.waterSchedule,
         fetchingSchedule: state.scheduleReducer.fetchingSchedule,
         addingSchedule: state.scheduleReducer.addingSchedule,
+        deletingSchedule: state.scheduleReducer.deletingSchedule
     }
 }
 
-export default connect(mapStateToProps, { fetchPlant, fetchSchedule, addSchedule, deleteSchedule, updatePlant })(PlantPage);
+export default connect(mapStateToProps, { fetchPlant, fetchSchedule, addSchedule, deleteSchedule, deleteSingleSchedule, updatePlant })(PlantPage);

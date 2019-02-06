@@ -9,14 +9,14 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import '../../datepicker.css';
-
+import PropTypes from 'prop-types';
 
 class PlantForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             nameInput: '',
-            characteristicsInput: '',
+            locationInput: '',
             descInput: ''
         }
     }
@@ -148,6 +148,11 @@ const LoadingSpinner = styled(CircularProgress)`
         color: white;
     }
 `; 
+
+PlantForm.propTypes = {
+    addPlant: PropTypes.func.isRequired,
+    addingPlant: PropTypes.bool.isRequired,
+}
 
 const mapStateToProps = state => {
     return {
