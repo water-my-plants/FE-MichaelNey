@@ -18,7 +18,7 @@ class PlantsTable extends React.Component {
             <Head>
                 <TableRow>
                     <Cell align="left">Plant</Cell>
-                    <Cell align="center">Characteristics</Cell>
+                    <Cell align="center">Location</Cell>
                     <Cell align="center">Description</Cell>
                     <Cell align="right">Actions</Cell>
                 </TableRow>

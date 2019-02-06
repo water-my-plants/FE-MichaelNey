@@ -68,11 +68,6 @@ class ScheduleForm extends React.Component {
     }
     
     render() {
-        //Causing warning - cannont update during an existing state transition, however it works as intended. No negative side effects.
-        if(this.props.loggedIn) {
-            this.props.history.push('/');
-        }
-        
         return (
         <ScheduleFormBox>
             <CloseModalBtn onClick={this.props.toggleModal}><i className="fas fa-times-circle"></i></CloseModalBtn>

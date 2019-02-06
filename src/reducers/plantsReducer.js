@@ -9,7 +9,10 @@ import {
     ADD_PLANT_SUCCESS,
     ADD_PLANT_FAILURE,
     DELETE_PLANT_SUCCESS,
-    DELETE_PLANT_FAILURE
+    DELETE_PLANT_FAILURE,
+    UPDATE_PLANT_START,
+    UPDATE_PLANT_SUCCESS,
+    UPDATE_PLANT_FAILURE
 } from '../actions';
 
 const initialState = {
@@ -19,7 +22,8 @@ const initialState = {
     fetchingSchedule: false,
     addingPlant: false,
     addingSchedule: false,
-    lastFetchedPlant: null
+    lastFetchedPlant: null,
+    updatingPlant: false
 }
 
 const plantsReducer = (state = initialState, action) => {
@@ -90,6 +94,26 @@ const plantsReducer = (state = initialState, action) => {
         case DELETE_PLANT_FAILURE: 
             return {
                 ...state
+            }
+        case UPDATE_PLANT_START:
+            return {
+                ...state,
+                updatingPlant: true
+            }
+        case UPDATE_PLANT_SUCCESS:
+            return {
+                ...state,
+                updatingPlant: false,
+                plants: [
+                    ...state.plants.filter(p => p.id !== action.payload.id),
+                    action.payload
+                ],
+                lastFetchedPlant: action.payload
+            }
+        case UPDATE_PLANT_FAILURE:
+            return {
+                ...state,
+                updatingPlant: false
             }
         default:
             return {
