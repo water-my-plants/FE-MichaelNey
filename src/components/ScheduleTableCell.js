@@ -24,6 +24,12 @@ class ScheduleTableCell extends React.Component {
         });
     }
 
+    closeModal = () => {
+        this.setState({
+            modalOpen: false
+        })
+    }
+
     deleteSchedule = (plantId, scheduleId) => {
         this.toggleModal();
         this.props.deleteSingleSchedule(plantId, scheduleId);
@@ -31,18 +37,18 @@ class ScheduleTableCell extends React.Component {
 
     render() {
         return (
-            <TableRow>
-                <DeleteModal open={this.state.modalOpen}>
+            <RowContainer>
+                <DeleteModal onClose={this.closeModal} open={this.state.modalOpen}>
                     <ModalBox>
                         <h3>Are You Sure You Want To Delete This Watering Time?</h3>
                         <ModalButton no="true"  onClick={this.toggleModal}>No</ModalButton>
-                        <ModalButton yes="true" onClick={e => this.deleteSchedule(this.props.plantId, this.props.schedule.id)}>Yes</ModalButton> 
+                        <ModalButton yes="true" onClick={e => this.deleteSchedule(this.props.plantId, this.props.schedule.id)}>Delete</ModalButton> 
                     </ModalBox>
                 </DeleteModal>
                 <Cell align="left">{moment(this.props.schedule.watering_time).format('ddd, MMM, Do YYYY, h:mm:ss a')}</Cell>
                 <Cell align="center">{moment(this.props.schedule.watering_time).fromNow()}</Cell>
-                <Cell align="right"><ActionButton delete onClick={this.toggleModal}><i className="fas fa-times-circle"></i></ActionButton></Cell> 
-            </TableRow> 
+                <Cell align="right"><ActionButton delete onClick={this.toggleModal}>Delete <i className="fas fa-times-circle"></i></ActionButton></Cell> 
+            </RowContainer> 
         )
     }
     
@@ -83,10 +89,29 @@ const ModalBox = styled(Paper)`
     }
 `;
 
+const RowContainer = styled(TableRow)`
+    && {
+        @media (max-width: ${props => props.theme.tableBreakPoint}) {
+            &:nth-of-type(odd) {
+                background: rgba(0, 0, 0, .15);
+            }
+        }
+    }
+    
+`;
+
 const Cell = styled(TableCell)`
     && {
-        font-size: 1.6rem;
-        width: 33%;
+        font-size: 2rem;
+        @media (max-width: ${props => props.theme.tableBreakPoint}) {
+            display: block;
+            width: 100%;
+            text-align: center;
+            padding: 3px;
+            &:last-of-type {
+                padding-right: 6px;
+            }
+        }
     }
 `;
 

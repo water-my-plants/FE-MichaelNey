@@ -24,6 +24,12 @@ class Profile extends React.Component {
         });
     }
 
+    closeModal = () => {
+        this.setState({
+            modalOpen: false
+        })
+    }
+
     render() {
         //User object, to be spread into our EditProfileForm props.
         let user = {
@@ -39,7 +45,7 @@ class Profile extends React.Component {
                     <p><strong>Phone:</strong> {this.props.phone}</p>
                     <ModalButton onClick={this.toggleModal}>Edit Profile</ModalButton>
                 </PlantInfo>
-                <EditFormModal open={this.state.modalOpen}>
+                <EditFormModal onClose={this.closeModal} open={this.state.modalOpen}>
                     <EditProfileForm {...user} userId={this.props.userId} updatingUser={this.props.updatingUser} updateUser={this.props.updateUser} toggleModal={this.toggleModal} />
                 </EditFormModal>
             </div>

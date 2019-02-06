@@ -8,6 +8,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Paper from '@material-ui/core/Paper';
 import ScheduleTable from '../ScheduleTable';
 import EditPlantForm from '../EditPlantForm';
+import ScheduleForm from '../ScheduleForm';
 import PropTypes from 'prop-types';
 
 class PlantPage extends React.Component {
@@ -15,7 +16,9 @@ class PlantPage extends React.Component {
         super(props);
 
         this.state = {
-            modalOpen: false
+            modalOpen: false,
+            scheduleModal: false,
+            deleteScheduleModal: false
         }
     }
 
@@ -25,6 +28,30 @@ class PlantPage extends React.Component {
                 modalOpen: !prevState.modalOpen
             }
         });
+    }
+
+    toggleScheduleModal = () => {
+        this.setState(prevState => {
+            return {
+                scheduleModal: !prevState.scheduleModal
+            }
+        });
+    }
+
+    toggleDeleteScheduleModal = () => {
+        this.setState(prevState => {
+            return {
+                deleteScheduleModal: !prevState.deleteScheduleModal
+            }
+        });
+    }
+
+    closeModal = () => {
+        this.setState({
+            modalOpen: false,
+            scheduleModal: false,
+            deleteScheduleModal: false
+        })
     }
 
     componentDidMount() {
@@ -51,21 +78,43 @@ class PlantPage extends React.Component {
                                 <p><strong>location:</strong> {this.props.lastFetchedPlant.location ? `${this.props.lastFetchedPlant.location}` : <LightText>N/A</LightText>}</p>
                                 <p><strong>Description:</strong> {this.props.lastFetchedPlant.description ? `${this.props.lastFetchedPlant.description}` : <LightText>N/A</LightText>}</p>
                                 <ModalButton onClick={this.toggleModal}>Edit Plant</ModalButton>
-                                <EditFormModal open={this.state.modalOpen}>
+                                <EditFormModal onClose={this.closeModal} open={this.state.modalOpen}>
                                     <EditPlantForm plant={this.props.lastFetchedPlant} updatingPlant={this.props.updatingPlant} updatePlant={this.props.updatePlant} toggleModal={this.toggleModal} />
                                 </EditFormModal>
                             </PlantInfo>
                             {/* ScheduleTable component handles multiple loading spinners. This many props is neccessary to maintain Container/Presentational component architecture. */}
-                            {!this.props.fetchingSchedule && <ScheduleTable 
-                                                            plantId={this.props.lastFetchedPlant.id} 
-                                                            addingSchedule={this.props.addingSchedule} 
-                                                            addSchedule={this.props.addSchedule} 
-                                                            schedule={this.props.waterSchedule} 
-                                                            deleteSchedule={this.props.deleteSchedule} 
-                                                            deleteSingleSchedule={this.props.deleteSingleSchedule} 
-                                                            deletingSchedule={this.props.deletingSchedule} 
-                            /> }
+                            {!this.props.fetchingSchedule && <>
+                            <ScheduleButtons>
+                                <ScheduleAddButton onClick={this.toggleScheduleModal}>
+                                    Add A Schedule
+                                </ScheduleAddButton>
+                                <ScheduleAddButton negative="true" onClick={this.toggleDeleteScheduleModal}>
+                                    {this.props.deletingSchedule ? <LoadingSpinnerSmall size="28" /> : 'Delete Schedule'}
+                                </ScheduleAddButton>
+                            </ScheduleButtons>
+                            <ScheduleTable 
+                                plantId={this.props.lastFetchedPlant.id} 
+                                addingSchedule={this.props.addingSchedule} 
+                                addSchedule={this.props.addSchedule} 
+                                schedule={this.props.waterSchedule} 
+                                deleteSchedule={this.props.deleteSchedule} 
+                                deleteSingleSchedule={this.props.deleteSingleSchedule} 
+                                deletingSchedule={this.props.deletingSchedule} 
+                            />
+                            
+                            </> }
+                            <ScheduleFormModal onClose={this.closeModal} open={this.state.scheduleModal}>
+                                <ScheduleForm addingSchedule={this.props.addingSchedule} addSchedule={this.props.addSchedule} toggleModal={this.closeModal} />
+                            </ScheduleFormModal>
+                            <ScheduleFormModal onClose={this.closeModal} open={this.state.deleteScheduleModal}>
+                                <ModalBox>
+                                    <h3>Are You Sure You Want To Delete All Watering Times?</h3>
+                                    <ModalButton no="true"  onClick={this.closeModal}>No</ModalButton>
+                                    <ModalButton yes="true" onClick={e => {this.props.deleteSchedule(this.props.lastFetchedPlant.id); this.closeModal();}}>Delete</ModalButton> 
+                                </ModalBox>
+                            </ScheduleFormModal>
                         </>
+                        
                     }</>
                     
                 } 
@@ -74,16 +123,38 @@ class PlantPage extends React.Component {
     }
 }
 
+const ModalBox = styled(Paper)`
+    && {
+        font-size: 1.6rem;
+        padding: 12px;
+        text-align: center;
+    }
+`;
+
 const ModalButton = styled(Button)`
     && {
         font-size: 1.6rem;
-        width: 50%;
-        margin: 4px auto;
+        width: 45%;
+        margin: 4px 4px;
         color: white;
-        background: ${props => props.theme.primary};
+        background: ${props => {
+            if(props.yes) return props.theme.error;
+            return props.theme.primary;
+        }};
         &:hover {
-            background: ${props => props.theme.primaryLight};
+            background: ${props => {
+            if(props.yes) return props.theme.errorDark;
+            return props.theme.primaryLight;
+        }};
         }
+    }
+`;
+
+const ScheduleFormModal = styled(Dialog)`
+    && {
+        font-size: 1.6rem;
+        padding: 12px;
+        text-align: center;
     }
 `;
 
@@ -92,6 +163,43 @@ const EditFormModal = styled(Dialog)`
         font-size: 1.6rem;
         padding: 12px;
         text-align: center;
+        @media (max-width: ${props => props.theme.medium}) {
+            max-width: 100%;
+            width: 90%;
+            margin: 0;
+        }
+        @media (max-width: ${props => props.theme.small}) {
+            width: 98%;
+        }
+    }
+`;
+
+const ScheduleButtons = styled.div`
+    display: flex;
+    margin: 0 auto;
+    margin-top: 32px;
+    width: 95%;
+    justify-content: space-between;
+    padding: 0px;
+`;
+
+const ScheduleAddButton = styled(Button)`
+    && {
+        text-align: center;
+        font-size: 1.6rem;
+        width: 48%;
+        margin: 0px auto;
+        color: white;
+        background: ${props => {
+            if(props.negative) return props.theme.error;
+            return props.theme.primaryLight;
+        }};
+        &:hover {
+            background: ${props => {
+                if(props.negative) return props.theme.errorDark;
+                return props.theme.primaryDark;
+            }}
+        }
     }
 `;
 
@@ -140,6 +248,14 @@ const LoadingSpinner = styled(CircularProgress)`
     && {
         height: 42px;
         width: 42px;
+        color: white;
+    }
+`; 
+
+const LoadingSpinnerSmall = styled(CircularProgress)`
+    && {
+        height: 28px;
+        width: 28px;
         color: white;
     }
 `; 

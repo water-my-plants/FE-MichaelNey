@@ -24,6 +24,12 @@ class PlantTableCell extends React.Component {
         });
     }
 
+    closeModal = () => {
+        this.setState({
+            modalOpen: false
+        })
+    }
+
     deletePlant = (id) => {
         this.toggleModal();
         this.props.deletePlant(id);
@@ -31,23 +37,50 @@ class PlantTableCell extends React.Component {
 
     render() {
         return (
-            <TableRow>
-                <DeleteModal open={this.state.modalOpen}>
+            <RowContainer>
+                <DeleteModal onClose={this.closeModal} open={this.state.modalOpen}>
                     <ModalBox>
                         <h3>Are You Sure You Want To Delete This Plant?</h3>
                         <ModalButton no="true"  onClick={this.toggleModal}>No</ModalButton>
-                        <ModalButton yes="true"  onClick={e => this.deletePlant(this.props.plant.id)}>Yes</ModalButton>
+                        <ModalButton yes="true"  onClick={e => this.deletePlant(this.props.plant.id)}>Delete</ModalButton>
                     </ModalBox>
                 </DeleteModal>
                 <Cell align="left">{this.props.plant.name}</Cell>
                 <Cell align="center">{this.props.plant.location ? `${this.props.plant.location}` : <LightText>N/A</LightText>}</Cell>
                 <Cell align="center">{this.props.plant.description ? `${this.props.plant.description}` : <LightText>N/A</LightText>}</Cell>
                 <Cell align="right"><ActionButton edit><Link to={`/plants/${this.props.plant.id}`}><i className="fas fa-edit"></i></Link></ActionButton><ActionButton delete onClick={this.toggleModal}><i className="fas fa-times-circle"></i></ActionButton></Cell>
-            </TableRow> 
+            </RowContainer> 
         )
     }
     
 }
+
+const RowContainer = styled(TableRow)`
+    && {
+        @media (max-width: ${props => props.theme.tableBreakPoint}) {
+            &:nth-of-type(even) {
+                background: rgba(0, 0, 0, .15);
+            }
+        }
+    }
+    
+`;
+
+
+const Cell = styled(TableCell)`
+    && {
+        font-size: 2rem;
+        @media (max-width: ${props => props.theme.tableBreakPoint}) {
+            display: block;
+            width: 100%;
+            text-align: center;
+            padding: 3px;
+            &:last-of-type {
+                padding-right: 6px;
+            }
+        }
+    }
+`;
 
 const ModalButton = styled(Button)`
     && {
@@ -81,12 +114,6 @@ const ModalBox = styled(Paper)`
         font-size: 1.6rem;
         padding: 12px;
         text-align: center;
-    }
-`;
-
-const Cell = styled(TableCell)`
-    && {
-        font-size: 1.6rem;
     }
 `;
 
