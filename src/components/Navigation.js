@@ -6,12 +6,27 @@ import AppBar from '@material-ui/core/AppBar';
 import PropTypes from 'prop-types';
 
 class Navigation extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            navOpen: false
+        };
+    }
+
+    toggleNav = () => {
+        this.setState(prevState => {
+            return {
+                navOpen: !prevState.navOpen
+            }
+        });
+    }
+
     render() {
         return (
             <TopBar position="static">
                 <Nav>
-                    <Brand>Water My Plants</Brand>
-                    <NavLinks>
+                    <Brand>Water My Plants <MenuExpand onClick={this.toggleNav}><i className="fas fa-bars"></i></MenuExpand></Brand>
+                    <NavLinks open={this.state.navOpen}>
                     {!this.props.loggedIn ? null :
                         <>
                             <NavbarLink activeClassName="active" exact to="/plants">Plants</NavbarLink>
@@ -19,15 +34,14 @@ class Navigation extends React.Component {
                         </>
                     }
                     </NavLinks>
-                    <NavActions>
+                    <NavActions open={this.state.navOpen}>
                         {/* If we aren't logged in, only show the Login link. Otherwise, show all the navigation options and our users profile name + link to profile */}
                         {!this.props.loggedIn ? <><NavbarLink activeClassName="active" to="/login">Login</NavbarLink><NavbarLink activeClassName="active" to="/register">Register</NavbarLink></> :
                         <>
                             <NavbarLink activeClassName="active" to="/profile">{this.props.username} <i className="fas fa-user-circle"></i></NavbarLink>
-                            <NavbarLink activeClassName="active" to="/logout"><i className="fas fa-sign-out-alt"></i></NavbarLink>
+                            <NavbarLink activeClassName="active" to="/logout">Logout <i className="fas fa-sign-out-alt"></i></NavbarLink>
                         </>
                         }
-                        
                     </NavActions>
                 </Nav>
             </TopBar>
@@ -35,27 +49,53 @@ class Navigation extends React.Component {
     }
 }
 
+const MenuExpand = styled.span`
+    padding: 0px 12px;
+    font-size: 2.8rem;
+    text-align: right;
+    &:hover {
+        cursor: pointer;
+    }
+    display: none;
+    @media (max-width: ${props => props.theme.large}) {
+        display: inline-block;
+    }
+`;
+
 const Brand = styled.span`
     font-size: 2rem;
     color: white;
     padding: 12px;
-    width: 25%;
+    width: 30%;
     text-align: left;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    @media (max-width: ${props => props.theme.large}) {
+        width: 100%;
+    }
 `;
 
 const NavLinks = styled.div`
+    width: 40%;
     font-size: 2rem;
     color: white;
-    width: 50%;
     text-align: center;
-
-    a {
-        
+    @media (max-width: ${props => props.theme.large}) {
+        flex-direction: column;
+        display: ${props => {
+            if(props.open) return 'flex';
+            return 'none';
+        }};
+        width: 100%;
+        a {
+            /* display: none; */
+        }
     }
 `;
 
 const NavbarLink = styled(NavLink)`
-    padding: 12px 20px;
+    padding: 18px 20px;
     margin: 0 0;
     text-decoration: none;
     color: rgba(255, 255, 255, .60);
@@ -76,14 +116,27 @@ const NavbarLink = styled(NavLink)`
     i {
         padding: 0 8px;
     }
+
+    @media (max-width: ${props => props.theme.large}) {
+        width: 100%;
+        text-align: center;
+    }
 `;
 
 const NavActions = styled.div`
     font-size: 2rem;
     color: white;
-    width: 25%;
+    width: 30%;
     text-align: right;
-    padding: 0 12px;
+    @media (max-width: ${props => props.theme.large}) {
+        width: 100%;
+        text-align: center;
+        display: ${props => {
+            if(props.open) return 'flex';
+            return 'none';
+        }};
+        flex-direction: column;
+    }
 `;
 
 const TopBar = styled(AppBar)`
@@ -97,6 +150,10 @@ const TopBar = styled(AppBar)`
         display: flex;
         flex-direction: row;
         justify-content: center;
+        align-items: baseline;
+        @media (max-width: ${props => props.theme.large}) {
+            padding: 0;
+        }   
     }
     
 `;
