@@ -13,6 +13,7 @@ import Navigation from './components/Navigation';
 import Footer from './components/Footer';
 import Notifications from './components/Notifications';
 import LoadUser from './components/LoadUser';
+import Profile from './components/views/Profile';
 
 class App extends Component {
   
@@ -32,6 +33,7 @@ class App extends Component {
           <PrivateRoute exact path="/plants" component={Home} />
           <PrivateRoute exact path="/plants/:id(\d+)" component={PlantPage} />
           <PrivateRoute exact path="/plants/add" component={PlantForm} />
+          <PrivateRoute exact path="/profile" component={Profile} />
           <Route exact path="/logout" render={props => <Logout {...props} />} />
           <Route exact path="/login" render={props => <Login {...props} />} />
           <Route exact path="/register" render={props => <Register {...props} />} />

@@ -2,14 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { addPlant } from '../../actions'
 import styled, { withTheme } from 'styled-components';
-import moment from 'moment';
 import Card from '@material-ui/core/Card';
 import FormControl from '@material-ui/core/FormControl'
 import FilledInput from '@material-ui/core/FilledInput';
 import InputLabel from '@material-ui/core/InputLabel';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import DatePicker, { } from "react-datepicker";
 import '../../datepicker.css';
 
 
@@ -96,18 +94,6 @@ class PlantForm extends React.Component {
         )
     }
 }
-
-const DateInput = styled(DatePicker)`
-    &&&& {
-        font-size: 1.6rem;
-        display: flex;
-        width: 100%;
-        div input {
-            width: 100%;
-        }
-    }
-    
-`;
 
 const PlantBox = styled(Card)`
     position: relative;

@@ -36,8 +36,8 @@ class ScheduleTableCell extends React.Component {
                 <DeleteModal open={this.state.modalOpen}>
                     <ModalBox>
                         <h3>Are You Sure You Want To Delete This Watering Schedule?</h3>
-                        <ModalButton no  onClick={this.toggleModal}>No</ModalButton>
-                        <ModalButton yes  >Yes</ModalButton> 
+                        <ModalButton no="true"  onClick={this.toggleModal}>No</ModalButton>
+                        <ModalButton yes="true"  >Yes</ModalButton> 
                         {/* onClick={e => this.deleteSchedule(this.props.plant.id)} for yes button */}
                     </ModalBox>
                 </DeleteModal>
@@ -90,10 +90,6 @@ const Cell = styled(TableCell)`
         font-size: 1.6rem;
         width: 33%;
     }
-`;
-
-const LightText = styled.span`
-    color: rgba(0, 0, 0, .25);
 `;
 
 const ActionButton = styled.span`

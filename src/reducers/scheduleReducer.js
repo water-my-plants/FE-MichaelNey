@@ -40,7 +40,8 @@ const scheduleReducer = (state = initialState, action) => {
         case ADD_SCHEDULE_SUCCESS:
             return {
                 ...state,
-                addingSchedule: false
+                addingSchedule: false,
+                waterSchedule: action.payload
             }
         case ADD_SCHEDULE_FAILURE:
             return {

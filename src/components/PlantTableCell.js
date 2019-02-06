@@ -35,8 +35,8 @@ class PlantTableCell extends React.Component {
                 <DeleteModal open={this.state.modalOpen}>
                     <ModalBox>
                         <h3>Are You Sure You Want To Delete This Plant?</h3>
-                        <ModalButton no  onClick={this.toggleModal}>No</ModalButton>
-                        <ModalButton yes  onClick={e => this.deletePlant(this.props.plant.id)}>Yes</ModalButton>
+                        <ModalButton no="true"  onClick={this.toggleModal}>No</ModalButton>
+                        <ModalButton yes="true"  onClick={e => this.deletePlant(this.props.plant.id)}>Yes</ModalButton>
                     </ModalBox>
                 </DeleteModal>
                 <Cell align="left">{this.props.plant.name}</Cell>
