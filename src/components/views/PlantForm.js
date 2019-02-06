@@ -61,7 +61,7 @@ class PlantForm extends React.Component {
                     <h1>New Plant</h1>
                     <Form onSubmit={this.handleSubmit} autoComplete="off">
                         <InputContainer variant="filled">
-                            <Label htmlFor="nameInput">Plant Name</Label>
+                            <Label htmlFor="nameInput">Plant Name *</Label>
                             <Input required type="text" name="nameInput" value={this.state.nameInput} onChange={this.handleInput} />
                         </InputContainer>
                         <InputContainer variant="filled">
