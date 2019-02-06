@@ -6,7 +6,7 @@ import Paper from '@material-ui/core/Paper';
 import EditProfileForm from '../EditProfileForm';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
-
+import PropTypes from 'prop-types';
 class Profile extends React.Component {
     constructor(props) {
         super(props);
@@ -87,6 +87,15 @@ const PlantInfo = styled(Paper)`
         width: 98%;
     }
 `;
+
+Profile.propTypes = {
+    email: PropTypes.string.isRequired,
+    phone: PropTypes.string.isRequired,
+    updateUser: PropTypes.func.isRequired,
+    updatingUser: PropTypes.bool.isRequired,
+    userId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+    username: PropTypes.string.isRequired
+}
 
 const mapStateToProps = state => {
     return {

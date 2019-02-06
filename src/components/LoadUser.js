@@ -3,6 +3,7 @@ import { userLoad, userLogout, addNotifHelper } from '../actions';
 import { connect } from 'react-redux';
 import styled, { withTheme } from 'styled-components';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import PropTypes from 'prop-types';
 //Redux returned null with localstorage right at loadtime. Solution is this component that successfully retrieves localStorage values as requested AFTER load, so we actually get the values we need.
 //If the user ID + JWT Token are in local storage, then we fetch the user details from the server, then load them into our redux store!
 class PopulateUser extends React.Component {
@@ -62,10 +63,18 @@ const LoadingSpinner = styled(CircularProgress)`
     }
 `; 
 
+PopulateUser.propTypes = {
+    addNotifHelper: PropTypes.func.isRequired,
+    returning: PropTypes.bool,
+    userLoad: PropTypes.func.isRequired,
+    userLogout: PropTypes.func.isRequired
+}
+
 const mapStateToProps = (state) => {
     return {
         returning: state.userReducer.returning
     }
 }
+
 
 export default connect(mapStateToProps, { userLoad, userLogout, addNotifHelper })(withTheme(PopulateUser));

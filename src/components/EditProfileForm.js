@@ -8,6 +8,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import MaskedInput from 'react-text-mask';
+import PropTypes from 'prop-types';
 
 class EditProfileForm extends React.Component {
     constructor(props) {
@@ -65,7 +66,6 @@ class EditProfileForm extends React.Component {
     }
 
     render() {
-        
         return (
         <EditProfileFormBox>
             <CloseModalBtn onClick={this.props.toggleModal}><i className="fas fa-times-circle"></i></CloseModalBtn>
@@ -219,6 +219,15 @@ const LoadingSpinner = styled(CircularProgress)`
         width: 28px;
         color: white;
     }
-`; 
+`;
+
+EditProfileForm.propTypes = {
+    email: PropTypes.string.isRequired,
+    phone: PropTypes.string.isRequired,
+    toggleModal: PropTypes.func.isRequired,
+    updateUser: PropTypes.func.isRequired,
+    userId: PropTypes.number.isRequired,
+    username: PropTypes.string.isRequired
+}
 
 export default withTheme(withRouter(EditProfileForm));

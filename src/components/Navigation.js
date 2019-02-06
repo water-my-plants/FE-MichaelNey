@@ -2,8 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-
 import AppBar from '@material-ui/core/AppBar';
+import PropTypes from 'prop-types';
 
 class Navigation extends React.Component {
     render() {
@@ -110,6 +110,11 @@ const Nav = styled.nav`
     justify-content: center;
     align-items: center;
 `;
+
+Navigation.propTypes = {
+    loggedIn: PropTypes.bool.isRequired,
+    username: PropTypes.string.isRequired
+}
 
 const mapStateToProps = (state) => {
     return {

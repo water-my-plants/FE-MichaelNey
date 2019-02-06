@@ -7,7 +7,7 @@ import FilledInput from '@material-ui/core/FilledInput';
 import InputLabel from '@material-ui/core/InputLabel';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
-
+import PropTypes from 'prop-types';
 class EditPlantForm extends React.Component {
     constructor(props) {
         super(props);
@@ -157,5 +157,19 @@ const LoadingSpinner = styled(CircularProgress)`
         color: white;
     }
 `; 
+
+EditPlantForm.propTypes = {
+    plant: PropTypes.shape({
+        description: PropTypes.string,
+        id: PropTypes.number.isRequired,
+        last_water: PropTypes.any,
+        location: PropTypes.string,
+        name: PropTypes.string.isRequired,
+        user_id: PropTypes.number.isRequired
+    }).isRequired,
+    toggleModal: PropTypes.func.isRequired,
+    updatePlant: PropTypes.func.isRequired,
+    updatingPlant: PropTypes.bool.isRequired
+}
 
 export default withTheme(withRouter(EditPlantForm));

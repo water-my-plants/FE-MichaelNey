@@ -1,8 +1,6 @@
 import React from 'react';
-
 import { connect } from 'react-redux';
 import { userLogin } from '../../actions';
-
 import styled, { withTheme } from 'styled-components';
 import { Link } from 'react-router-dom';
 import Card from '@material-ui/core/Card';
@@ -11,6 +9,7 @@ import FilledInput from '@material-ui/core/FilledInput';
 import InputLabel from '@material-ui/core/InputLabel';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import PropTypes from 'prop-types';
 
 class Login extends React.Component {
     constructor(props) {
@@ -18,6 +17,18 @@ class Login extends React.Component {
         this.state = {
             userInput: '',
             passInput: ''
+        }
+    }
+
+    componentDidMount() {
+        if(this.props.loggedIn) {
+            this.props.history.push('/');
+        }
+    }
+
+    componentDidUpdate() {
+        if(this.props.loggedIn) {
+            this.props.history.push('/');
         }
     }
 
@@ -39,11 +50,6 @@ class Login extends React.Component {
     }
     
     render() {
-        //Causing warning - cannont update during an existing state transition, however it works as intended. No negative side effects.
-        if(this.props.loggedIn) {
-            this.props.history.push('/');
-        }
-        
         return (
             <div>
                 <LoginBox>
@@ -148,6 +154,12 @@ const LoadingSpinner = styled(CircularProgress)`
         color: white;
     }
 `; 
+
+Login.propTypes = {
+    loggedIn: PropTypes.bool.isRequired,
+    loggingIn: PropTypes.bool.isRequired,
+    userLogin: PropTypes.func.isRequired
+}
 
 const mapStateToProps = (state) => {
     return {

@@ -10,6 +10,7 @@ import FilledInput from '@material-ui/core/FilledInput';
 import InputLabel from '@material-ui/core/InputLabel';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import PropTypes from 'prop-types';
 
 class Register extends React.Component {
     constructor(props) {
@@ -21,6 +22,18 @@ class Register extends React.Component {
             passInput: '',
             confirmPassInput: '',
             formError: ''
+        }
+    }
+
+    componentDidMount() {
+        if(this.props.loggedIn) {
+            this.props.history.push('/');
+        }
+    }
+
+    componentDidUpdate() {
+        if(this.props.loggedIn) {
+            this.props.history.push('/');
         }
     }
 
@@ -74,9 +87,6 @@ class Register extends React.Component {
     }
     
     render() {
-        if(this.props.loggedIn) {
-            this.props.history.push('/');
-        }
         return (
             <div>
                 <LoginBox>
@@ -234,6 +244,16 @@ const LoadingSpinner = styled(CircularProgress)`
         color: white;
     }
 `; 
+
+Register.propTypes = {
+    loggedIn: PropTypes.bool.isRequired,
+    registered: PropTypes.oneOfType([
+        PropTypes.bool,
+        PropTypes.oneOf([null])
+    ]),
+    registering: PropTypes.bool.isRequired,
+    userRegister: PropTypes.func.isRequired
+}
 
 const mapStateToProps = (state) => {
     return {

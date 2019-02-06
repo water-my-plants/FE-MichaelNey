@@ -13,6 +13,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import DatePicker, { } from "react-datepicker";
 import '../datepicker.css';
 import { Portal } from 'react-overlays'
+import PropTypes from 'prop-types';
 
 class ScheduleForm extends React.Component {
     constructor(props) {
@@ -232,6 +233,12 @@ const LoadingSpinner = styled(CircularProgress)`
         width: 28px;
         color: white;
     }
-`; 
+`;
+
+ScheduleForm.propTypes = {
+    addSchedule: PropTypes.func.isRequired,
+    addingSchedule: PropTypes.bool.isRequired,
+    toggleModal: PropTypes.func.isRequired
+}
 
 export default withTheme(withRouter(ScheduleForm));

@@ -5,8 +5,8 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import moment from 'moment';
-
 import styled, { withTheme } from 'styled-components';
+import PropTypes from 'prop-types';
 
 class ScheduleTableCell extends React.Component {
     constructor(props) {
@@ -118,5 +118,14 @@ const ActionButton = styled.span`
         }
     }
 `;
+
+ScheduleTableCell.propTypes = {
+    plantId: PropTypes.number.isRequired, 
+    deleteSingleSchedule: PropTypes.func.isRequired,
+    schedule: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        watering_time: PropTypes.string.isRequired
+    }).isRequired
+}
 
 export default withTheme(ScheduleTableCell);

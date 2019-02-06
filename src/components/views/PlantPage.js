@@ -8,7 +8,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Paper from '@material-ui/core/Paper';
 import ScheduleTable from '../ScheduleTable';
 import EditPlantForm from '../EditPlantForm';
-
+import PropTypes from 'prop-types';
 
 class PlantPage extends React.Component {
     constructor(props) {
@@ -143,6 +143,32 @@ const LoadingSpinner = styled(CircularProgress)`
         color: white;
     }
 `; 
+
+PlantPage.propTypes = {
+    addSchedule: PropTypes.func.isRequired,
+    addingSchedule: PropTypes.bool.isRequired,
+    deleteSchedule: PropTypes.func.isRequired,
+    deleteSingleSchedule: PropTypes.func.isRequired,
+    deletingSchedule: PropTypes.bool.isRequired,
+    fetchPlant: PropTypes.func.isRequired,
+    fetchSchedule: PropTypes.func.isRequired,
+    fetchingPlant: PropTypes.bool.isRequired,
+    fetchingSchedule: PropTypes.bool.isRequired,
+    lastFetchedPlant: PropTypes.shape({
+        description: PropTypes.string,
+        id: PropTypes.number.isRequired,
+        last_water: PropTypes.any,
+        location: PropTypes.string,
+        name: PropTypes.string.isRequired,
+        user_id: PropTypes.number.isRequired
+    }),
+    updatePlant: PropTypes.func.isRequired,
+    updatingPlant: PropTypes.bool.isRequired,
+    waterSchedule: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        watering_time: PropTypes.string.isRequired
+    }))
+}
 
 const mapStateToProps = state => {
     return {
