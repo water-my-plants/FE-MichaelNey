@@ -86,24 +86,24 @@ class Register extends React.Component {
                     <h1>Register</h1>
                     <Form onSubmit={this.handleSubmit} autoComplete="off">
                         <InputContainer variant="filled">
-                            <Label htmlFor="userInput">Username</Label>
+                            <Label htmlFor="userInput">Username *</Label>
                             <Input required type="text" name="userInput" value={this.state.userInput} onChange={this.handleInput} />
                         </InputContainer>
                         <InputContainer variant="filled">
-                            <Label htmlFor="emailInput">Email</Label>
+                            <Label htmlFor="emailInput">Email *</Label>
                             <Input required type="email" name="emailInput" value={this.state.emailInput} onChange={this.handleInput} />
                         </InputContainer>
                         <InputContainer variant="filled">
-                            <Label htmlFor="phoneInput">Phone</Label>
+                            <Label htmlFor="phoneInput">Phone *</Label>
                             <Input required type="tel" name="phoneInput" value={this.state.phoneInput} onChange={this.handleInput} inputComponent={PhoneInput} />
-                            <HelperText>Phone number must include country code. Example US number: +13609554732</HelperText>
+                            <PhoneHelperText>Phone number must include country code. Example US number: +13609554732</PhoneHelperText>
                         </InputContainer>
                         <InputContainer variant="filled">
-                            <Label htmlFor="passInput">Password</Label>
+                            <Label htmlFor="passInput">Password *</Label>
                             <Input required type="password" name="passInput" value={this.state.passInput} onChange={this.handleInput} />
                         </InputContainer>
                         <InputContainer variant="filled">
-                            <Label htmlFor="confirmPassInput">Confirm Password</Label>
+                            <Label htmlFor="confirmPassInput">Confirm Password *</Label>
                             <Input required type="password" name="confirmPassInput" value={this.state.confirmPassInput} onChange={this.handleInput} />
                             {/* Do we have an error in the form? Display it to the user! */}
                             {this.state.formError !== '' && <FormError onClick={this.clearFormError}>{this.state.formError}</FormError>}
@@ -134,7 +134,7 @@ const PhoneInput = (props) => {
     )
 }
 
-const HelperText = styled.p`
+const PhoneHelperText = styled.p`
     font-size: 1.4rem;
     text-decoration: none;
     color: rgba(0, 0, 0, .5);
