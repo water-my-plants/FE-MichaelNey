@@ -41,7 +41,8 @@ class ScheduleTableCell extends React.Component {
                 </DeleteModal>
                 <Cell align="left">{moment(this.props.time).format('ddd, MMM, Do YYYY, h:mm:ss a')}</Cell>
                 <Cell align="center">{moment(this.props.time).fromNow()}</Cell>
-                <Cell align="right"><ActionButton delete onClick={this.toggleModal}><i className="fas fa-times-circle"></i></ActionButton></Cell>
+                <Cell align="right"></Cell> 
+                {/* <ActionButton delete onClick={this.toggleModal}><i className="fas fa-times-circle"></i></ActionButton> <--- For right cell when we get single water time deletion route */}
             </TableRow> 
         )
     }
