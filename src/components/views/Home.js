@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import PlantsTable from '../PlantsTable';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import { fetchPlants } from '../../actions';
+import { fetchPlants, deletePlant } from '../../actions';
 
 class Home extends React.Component {
 
@@ -17,7 +17,7 @@ class Home extends React.Component {
             <Container>
                 <header>Welcome, {this.props.username}</header>
                 {this.props.fetchingPlants ? <LoadingSpinner size="42" /> : 
-                    <PlantsTable plants={this.props.plants} />
+                    <PlantsTable deletePlant={this.props.deletePlant} plants={this.props.plants} />
                 }
                 
             </Container>
@@ -49,4 +49,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps, { fetchPlants })(Home);
+export default connect(mapStateToProps, { fetchPlants, deletePlant })(Home);

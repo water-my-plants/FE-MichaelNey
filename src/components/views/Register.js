@@ -134,6 +134,14 @@ const PhoneInput = (props) => {
     )
 }
 
+const HelperText = styled.p`
+    font-size: 1.4rem;
+    text-decoration: none;
+    color: rgba(0, 0, 0, .5);
+    margin: 0 auto;
+    padding-top: 6px;
+`;
+
 const FormError = styled.div`
     position: relative;
     border: 1px solid ${props => props.theme.error};

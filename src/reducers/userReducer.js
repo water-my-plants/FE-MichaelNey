@@ -1,6 +1,18 @@
 //Action Types
 import { 
-    USER_LOGIN_START, USER_LOGIN_SUCCESS, USER_LOGIN_FAILURE, USER_REGISTER_START, USER_REGISTER_SUCCESS, USER_REGISTER_FAILURE, USER_LOGOUT, USER_RETURN_START, USER_RETURN_SUCCESS
+    USER_LOGIN_START, 
+    USER_LOGIN_SUCCESS, 
+    USER_LOGIN_FAILURE, 
+    USER_REGISTER_START, 
+    USER_REGISTER_SUCCESS, 
+    USER_REGISTER_FAILURE, 
+    USER_LOGOUT, 
+    USER_RETURN_START, 
+    USER_RETURN_SUCCESS,
+    USER_RETURN_FAILURE,
+    UPDATE_USER_START,
+    UPDATE_USER_SUCCESS,
+    UPDATE_USER_FAILURE
 } from '../actions';
 
 const initialState = {
@@ -11,7 +23,8 @@ const initialState = {
     imgUrl: '',
     loggedIn: false,
     loggingIn: false, //Used for login form loading state.
-    registering: false //Used for registration form loading state.
+    registering: false, //Used for registration form loading state.
+    updatingUser: false
 };
 
 const userReducer = (state = initialState, action) => {
@@ -80,6 +93,30 @@ const userReducer = (state = initialState, action) => {
                 email: action.payload.email,
                 phone: action.payload.phone,
                 imgurl: action.payload.imgUrl
+            }
+        case USER_RETURN_FAILURE:
+            return {
+                ...state,
+                returning: false,
+                loggingIn: false
+            }
+        case UPDATE_USER_START:
+            return {
+                ...state,
+                updatingUser: true
+            }
+        case UPDATE_USER_SUCCESS:
+            return {
+                ...state,
+                updatingUser: false,
+                username: action.payload.username,
+                email: action.payload.email,
+                phone: action.payload.phone
+            }
+        case UPDATE_USER_FAILURE:
+            return {
+                ...state,
+                updatingUser: false
             }
         default:
             return state;

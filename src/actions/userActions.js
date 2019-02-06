@@ -11,6 +11,10 @@ export const USER_REGISTER_FAILURE = 'USER_REGISTER_FAILURE';
 export const USER_LOGOUT = 'USER_LOGOUT';
 export const USER_RETURN_START = 'USER_RETURN_START';
 export const USER_RETURN_SUCCESS = 'USER_RETURN_SUCCESS';
+export const USER_RETURN_FAILURE = 'USER_RETURN_FAILURE';
+export const UPDATE_USER_START = 'UPDATE_USER_START';
+export const UPDATE_USER_SUCCESS = 'UPDATE_USER_SUCCESS';
+export const UPDATE_USER_FAILURE = 'UPDATE_USER_FAILURE';
 
 export const userLogin = (username, password) => dispatch => {
     let body = {
@@ -66,5 +70,26 @@ export const userLoad = (url, token) => dispatch => {
     };
     axios.get(url, { headers })
             .then(res => dispatch({type: USER_RETURN_SUCCESS, payload: res.data}))
-            .catch(err => userLogout());
+            .catch(err => {
+                dispatch(addNotifHelper('Session expired. Please log in again.', 'error'));
+                dispatch({type: USER_RETURN_FAILURE})
+                userLogout();
+            });
+}
+
+export const updateUser = (id, user) => dispatch => {
+    dispatch({type: UPDATE_USER_START});
+    let token = localStorage.getItem('token');
+    let headers = {
+        'authorization': token
+    }
+    axios.put(`${process.env.REACT_APP_API}/users/${id}`, {...user}, { headers })
+        .then(res => {
+            dispatch({type: UPDATE_USER_SUCCESS, payload: res.data});
+            dispatch(addNotifHelper(`Updated Your Profile!`, 'success'));
+        })
+        .catch(err => {
+            dispatch({type: UPDATE_USER_FAILURE});
+            dispatch(addNotifHelper(err, 'error'));
+        });
 }
