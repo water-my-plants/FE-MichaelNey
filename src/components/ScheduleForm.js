@@ -88,6 +88,13 @@ class ScheduleForm extends React.Component {
                         selected={this.state.dateInputStart}
                         onChange={this.handleDateStart}
                         customInput={<Input />}
+                        popperModifiers={{
+                            preventOverflow: {
+                                enabled: true,
+                                escapeWithReference: false, // force popper to stay in viewport (even when input is scrolled out of view)
+                                boundariesElement: 'viewport'
+                            }
+                        }}
                     />
                 </InputContainer>
                 <InputContainer variant="filled">
@@ -103,6 +110,13 @@ class ScheduleForm extends React.Component {
                         selected={this.state.dateInputEnd}
                         onChange={this.handleDateEnd}
                         customInput={<Input />}
+                        popperModifiers={{
+                            preventOverflow: {
+                                enabled: true,
+                                escapeWithReference: false, // force popper to stay in viewport (even when input is scrolled out of view)
+                                boundariesElement: 'viewport'
+                            }
+                        }}
                     />
                 </InputContainer>
             </InputRow>
@@ -146,11 +160,15 @@ const InputRow = styled.div`
     display: flex;
     justify-content: space-between;
     width: 100%;
+
+    @media (max-width: ${props => props.theme.small}) {
+        flex-direction: column;
+    }
 `;
 
 const ScheduleFormBox = styled(Card)`
     position: relative;
-    width: 600px;
+    width: 100%;
     margin: 0 auto;
     font-size: 1.6rem;
 
@@ -160,11 +178,6 @@ const ScheduleFormBox = styled(Card)`
         color: ${props => props.theme.primary};
     }
 
-    
-
-    @media (max-width: ${props => props.theme.small}) {
-        width: 98%;
-    }
 `;
 
 const CloseModalBtn = styled.div`
@@ -192,6 +205,7 @@ const Form = styled.form`
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    
 `;
 
 const InputContainer = styled(FormControl)`

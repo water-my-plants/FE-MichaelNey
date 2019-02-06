@@ -57,7 +57,16 @@ const Head = styled(TableHead)`
 
 const Cell = styled(TableCell)`
     && {
-        font-size: 1.6rem;
+        font-size: 2rem;
+        @media (max-width: ${props => props.theme.tableBreakPoint}) {
+            display: block;
+            width: 100%;
+            text-align: center;
+            padding: 6px;
+            &:last-of-type {
+                padding-right: 6px;
+            }
+        }
     }
 `;
 

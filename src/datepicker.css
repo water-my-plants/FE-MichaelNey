@@ -199,11 +199,11 @@
 
 .react-datepicker__navigation--previous {
   left: 10px;
-  border-right-color: #ccc;
+  border-right-color: #30694B;
 }
 
 .react-datepicker__navigation--previous:hover {
-  border-right-color: #b3b3b3;
+  border-right-color: rgb(58, 124, 89);
 }
 
 .react-datepicker__navigation--previous--disabled, .react-datepicker__navigation--previous--disabled:hover {
@@ -213,15 +213,15 @@
 
 .react-datepicker__navigation--next {
   right: 10px;
-  border-left-color: #ccc;
+  border-left-color: #30694B;
 }
 
 .react-datepicker__navigation--next--with-time:not(.react-datepicker__navigation--next--with-today-button) {
-  right: 80px;
+  right: 121px;
 }
 
 .react-datepicker__navigation--next:hover {
-  border-left-color: #b3b3b3;
+  border-left-color: rgb(58, 124, 89);
 }
 
 .react-datepicker__navigation--next--disabled, .react-datepicker__navigation--next--disabled:hover {
@@ -634,11 +634,11 @@
 }
 
 .react-datepicker__portal .react-datepicker__navigation--previous {
-  border-right-color: #ccc;
+  border-right-color: #30694B;
 }
 
 .react-datepicker__portal .react-datepicker__navigation--previous:hover {
-  border-right-color: #b3b3b3;
+  border-right-color: rgb(58, 131, 92);
 }
 
 .react-datepicker__portal .react-datepicker__navigation--previous--disabled, .react-datepicker__portal .react-datepicker__navigation--previous--disabled:hover {
@@ -647,11 +647,12 @@
 }
 
 .react-datepicker__portal .react-datepicker__navigation--next {
+  border-right-color: #30694B;
   border-left-color: #ccc;
 }
 
 .react-datepicker__portal .react-datepicker__navigation--next:hover {
-  border-left-color: #b3b3b3;
+  border-left-color: rgb(58, 131, 92);
 }
 
 .react-datepicker__portal .react-datepicker__navigation--next--disabled, .react-datepicker__portal .react-datepicker__navigation--next--disabled:hover {

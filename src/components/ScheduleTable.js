@@ -32,6 +32,18 @@ class ScheduleTable extends React.Component {
         });
     }
 
+    closeModal = () => {
+        this.setState({
+            modalOpen: false
+        })
+    }
+
+    closeDeleteModal = () => {
+        this.setState({
+            deleteModalOpen: false
+        })
+    }
+
     toggleDeleteModal = () => {
         this.setState(prevState => {
             return {
@@ -53,18 +65,18 @@ class ScheduleTable extends React.Component {
             </Head>
             <TableBody>
                 <TableRow>
-                    <Cell align="left"></Cell>
-                    <Cell align="center"><ScheduleAddButton onClick={this.toggleModal}>Add A Schedule</ScheduleAddButton></Cell>
-                    <Cell align="right"></Cell>
+                    <Cell noborder="true" align="left"></Cell>
+                    <Cell noborder="true" align="center"><ScheduleAddButton onClick={this.toggleModal}>Add A Schedule</ScheduleAddButton></Cell>
+                    <Cell noborder="true" align="right"></Cell>
                 </TableRow>
                 <TableRow>
-                    <Cell align="left"></Cell>
-                    <Cell align="center">
+                    <Cell noborder="true" align="left"></Cell>
+                    <Cell noborder="true" align="center">
                         <ScheduleAddButton negative="true" onClick={this.toggleDeleteModal}>
                             {this.props.deletingSchedule ? <LoadingSpinner size="28" /> : 'Delete Schedule'}
                         </ScheduleAddButton>
                     </Cell>
-                    <Cell align="right"></Cell>
+                    <Cell noborder="true" align="right"></Cell>
                 </TableRow>
                 {/* If we have no plants, we will display the table, with the first and only cell being a message stating that they have no plants, but offering a link for them to add one! If there are plants, we simply map over them to display a table row for each plant! */}
                 {this.props.schedule.length < 1 ? <><TableRow><Cell align="left">{''}</Cell><Cell align="center"><h3>You don't have any watering schedules for this plant!</h3><h3><ToggleModalSpan onClick={this.toggleModal}>Add one!</ToggleModalSpan></h3></Cell></TableRow></> :
@@ -74,14 +86,14 @@ class ScheduleTable extends React.Component {
                 }
             </TableBody>
         </TableContainer>
-        <ScheduleFormModal open={this.state.modalOpen}>
+        <ScheduleFormModal onClose={this.closeModal} open={this.state.modalOpen}>
             <ScheduleForm addingSchedule={this.props.addingSchedule} addSchedule={this.props.addSchedule} toggleModal={this.toggleModal} />
         </ScheduleFormModal>
-        <ScheduleFormModal open={this.state.deleteModalOpen}>
+        <ScheduleFormModal onClose={this.closeDeleteModal} open={this.state.deleteModalOpen}>
             <ModalBox>
                 <h3>Are You Sure You Want To Delete All Watering Times?</h3>
                 <ModalButton no="true"  onClick={this.toggleDeleteModal}>No</ModalButton>
-                <ModalButton yes="true" onClick={e => {this.props.deleteSchedule(this.props.plantId); this.toggleDeleteModal();}}>Yes</ModalButton> 
+                <ModalButton yes="true" onClick={e => {this.props.deleteSchedule(this.props.plantId); this.toggleDeleteModal();}}>Delete</ModalButton> 
             </ModalBox>
         </ScheduleFormModal>
       </TablePaper>
@@ -184,7 +196,21 @@ const Head = styled(TableHead)`
 
 const Cell = styled(TableCell)`
     && {
-        font-size: 1.6rem;
+        font-size: 2rem;
+        width: 33%;
+        @media (max-width: ${props => props.theme.tableBreakPoint}) {
+            display: block;
+            width: 100%;
+            text-align: center;
+            padding: 6px;
+            border-bottom: ${props => {
+                if(props.noborder) return 'none';
+                return '1px solid rgba(224, 224, 224, 1)';
+            }};
+            &:last-of-type {
+                padding-right: 6px;
+            }
+        }
     }
 `;
 

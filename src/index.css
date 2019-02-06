@@ -21,9 +21,17 @@ code {
     monospace;
 }
 
-/* NEVER use !important. This is only to override our Pop-up notifications dynamic styling properties. */
+/* NEVER use !important. This is only to override our Pop-up notifications dynamic styling and Material UI properties. */
 #client-snackbar {
   font-size: 1.45rem !important;
 }
+
+.MuiDialog-paper-80 {
+  margin: 4px !important;
+  width: 100%;
+}
+
+
+/* NEVER use !important. This is only to override our Pop-up notifications and Material UI dynamic styling properties. */
 
 

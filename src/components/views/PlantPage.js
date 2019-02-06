@@ -8,6 +8,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Paper from '@material-ui/core/Paper';
 import ScheduleTable from '../ScheduleTable';
 import EditPlantForm from '../EditPlantForm';
+import withMobileDialog from '@material-ui/core/withMobileDialog';
 import PropTypes from 'prop-types';
 
 class PlantPage extends React.Component {
@@ -25,6 +26,12 @@ class PlantPage extends React.Component {
                 modalOpen: !prevState.modalOpen
             }
         });
+    }
+    
+    closeModal = () => {
+        this.setState({
+            modalOpen: false
+        })
     }
 
     componentDidMount() {
@@ -51,7 +58,7 @@ class PlantPage extends React.Component {
                                 <p><strong>location:</strong> {this.props.lastFetchedPlant.location ? `${this.props.lastFetchedPlant.location}` : <LightText>N/A</LightText>}</p>
                                 <p><strong>Description:</strong> {this.props.lastFetchedPlant.description ? `${this.props.lastFetchedPlant.description}` : <LightText>N/A</LightText>}</p>
                                 <ModalButton onClick={this.toggleModal}>Edit Plant</ModalButton>
-                                <EditFormModal open={this.state.modalOpen}>
+                                <EditFormModal onClose={this.closeModal} open={this.state.modalOpen}>
                                     <EditPlantForm plant={this.props.lastFetchedPlant} updatingPlant={this.props.updatingPlant} updatePlant={this.props.updatePlant} toggleModal={this.toggleModal} />
                                 </EditFormModal>
                             </PlantInfo>
@@ -92,6 +99,14 @@ const EditFormModal = styled(Dialog)`
         font-size: 1.6rem;
         padding: 12px;
         text-align: center;
+        @media (max-width: ${props => props.theme.medium}) {
+            max-width: 100%;
+            width: 90%;
+            margin: 0;
+        }
+        @media (max-width: ${props => props.theme.small}) {
+            width: 98%;
+        }
     }
 `;
 

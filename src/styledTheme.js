@@ -7,6 +7,7 @@ const theme = {
     error: '#d13648',
     errorDark: '#992835',
     errorLight: '#D95A69',
+    tableBreakPoint: '640px',
     small: '600px', //Large Phone/Tablet break point.
     medium: '960px', //Tablet/Laptop break point.
     large: '1024px', //Desktop break point.

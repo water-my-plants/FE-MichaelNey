@@ -21,10 +21,16 @@ class Navigation extends React.Component {
         });
     }
 
+    closeNav = () => {
+        this.setState({
+            navOpen: false
+        })
+    }
+
     render() {
         return (
             <TopBar position="static">
-                <Nav>
+                <Nav onMouseLeave={this.closeNav} >
                     <Brand>Water My Plants <MenuExpand onClick={this.toggleNav}><i className="fas fa-bars"></i></MenuExpand></Brand>
                     <NavLinks open={this.state.navOpen}>
                     {!this.props.loggedIn ? null :
