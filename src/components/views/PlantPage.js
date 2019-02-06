@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
-import { fetchPlant, fetchSchedule, addSchedule, deleteSchedule, updatePlant } from '../../actions';
+import { fetchPlant, fetchSchedule, addSchedule, deleteSchedule, deleteSingleSchedule, updatePlant } from '../../actions';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -55,7 +55,16 @@ class PlantPage extends React.Component {
                                     <EditPlantForm plant={this.props.lastFetchedPlant} updatingPlant={this.props.updatingPlant} updatePlant={this.props.updatePlant} toggleModal={this.toggleModal} />
                                 </EditFormModal>
                             </PlantInfo>
-                            {!this.props.fetchingSchedule && <ScheduleTable plantId={this.props.lastFetchedPlant.id} addingSchedule={this.props.addingSchedule} addSchedule={this.props.addSchedule} schedule={this.props.waterSchedule} deleteSchedule={this.props.deleteSchedule} /> }
+                            {/* ScheduleTable component handles multiple loading spinners. This many props is neccessary to maintain Container/Presentational component architecture. */}
+                            {!this.props.fetchingSchedule && <ScheduleTable 
+                                                            plantId={this.props.lastFetchedPlant.id} 
+                                                            addingSchedule={this.props.addingSchedule} 
+                                                            addSchedule={this.props.addSchedule} 
+                                                            schedule={this.props.waterSchedule} 
+                                                            deleteSchedule={this.props.deleteSchedule} 
+                                                            deleteSingleSchedule={this.props.deleteSingleSchedule} 
+                                                            deletingSchedule={this.props.deletingSchedule} 
+                            /> }
                         </>
                     }</>
                     
@@ -139,11 +148,13 @@ const mapStateToProps = state => {
     return {
         plants: state.plantsReducer.plants,
         fetchingPlant: state.plantsReducer.fetchingPlant,
+        updatingPlant: state.plantsReducer.updatingPlant,
         lastFetchedPlant: state.plantsReducer.lastFetchedPlant,
         waterSchedule: state.scheduleReducer.waterSchedule,
         fetchingSchedule: state.scheduleReducer.fetchingSchedule,
         addingSchedule: state.scheduleReducer.addingSchedule,
+        deletingSchedule: state.scheduleReducer.deletingSchedule
     }
 }
 
-export default connect(mapStateToProps, { fetchPlant, fetchSchedule, addSchedule, deleteSchedule, updatePlant })(PlantPage);
+export default connect(mapStateToProps, { fetchPlant, fetchSchedule, addSchedule, deleteSchedule, deleteSingleSchedule, updatePlant })(PlantPage);

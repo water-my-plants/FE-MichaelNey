@@ -16,7 +16,7 @@ class PlantForm extends React.Component {
         super(props);
         this.state = {
             nameInput: '',
-            characteristicsInput: '',
+            locationInput: '',
             descInput: ''
         }
     }

@@ -20,9 +20,9 @@ class EditPlantForm extends React.Component {
 
     componentDidMount() {
         this.setState({
-            nameInput: this.props.plant.name,
-            locationInput: this.props.plant.location,
-            descriptionInput: this.props.plant.description,
+            nameInput: this.props.plant.name || '',
+            locationInput: this.props.plant.location || '',
+            descriptionInput: this.props.plant.description || ''
         })
     }
 
@@ -41,6 +41,7 @@ class EditPlantForm extends React.Component {
             description: this.state.descriptionInput
         };
         this.props.updatePlant(this.props.plant.id, plantObj);
+        
     }
 
     render() {

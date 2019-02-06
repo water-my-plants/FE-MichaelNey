@@ -1,8 +1,6 @@
 import React from 'react';
-
 import { connect } from 'react-redux';
 import { userRegister } from '../../actions';
-
 import MaskedInput from 'react-text-mask';
 import styled, { withTheme } from 'styled-components';
 import { Link } from 'react-router-dom';
@@ -42,7 +40,6 @@ class Register extends React.Component {
 
         //check if phone number matches E.164 phone number format - To match Twilio API phone number specifications.
         let phoneRegex = RegExp(/^\+?[1-9]\d{1,14}$/);
-        console.log(phoneRegex.test(phone))
         if(phoneRegex.test(phone) === false) {
             this.setState({
                 formError: 'Phone number must include country code. Example US number: +13609554732'
@@ -173,14 +170,6 @@ const LoginBox = styled(Card)`
     @media (max-width: ${props => props.theme.small}) {
         width: 98%;
     }
-`;
-
-const HelperText = styled.p`
-    font-size: 1.4rem;
-    text-decoration: none;
-    color: rgba(0, 0, 0, .5);
-    margin: 0 auto;
-    padding-top: 6px;
 `;
 
 const LoginLink = styled(Link)`
