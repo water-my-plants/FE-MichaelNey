@@ -99,7 +99,8 @@ class PlantPage extends React.Component {
                                 schedule={this.props.waterSchedule} 
                                 deleteSchedule={this.props.deleteSchedule} 
                                 deleteSingleSchedule={this.props.deleteSingleSchedule} 
-                                deletingSchedule={this.props.deletingSchedule} 
+                                deletingSchedule={this.props.deletingSchedule}
+                                toggleModal={this.toggleScheduleModal}
                             />
                             
                             </> }
