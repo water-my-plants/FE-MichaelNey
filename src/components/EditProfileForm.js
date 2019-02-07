@@ -86,7 +86,7 @@ class EditProfileForm extends React.Component {
                 </InputContainer>
                 {this.state.formError !== '' && <FormError onClick={this.clearFormError}>{this.state.formError}</FormError>}
                 {/* If we are logging in, show a loading indicator while waiting for the response. */}
-                <EditBtn type="submit">{this.props.updatingUser ? <LoadingSpinner size="28" /> : 'Edit Profile'}</EditBtn>
+                <EditBtn type="submit">{this.props.updatingUser ? <LoadingSpinner size="28" /> : 'Update'}</EditBtn>
             </Form>
         </EditProfileFormBox>
         )
