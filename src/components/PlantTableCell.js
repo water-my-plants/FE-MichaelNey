@@ -6,6 +6,7 @@ import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import { Link }from 'react-router-dom';
 import styled, { withTheme } from 'styled-components';
+import moment from 'moment';
 import PropTypes from 'prop-types';
 
 class PlantTableCell extends React.Component {
@@ -36,6 +37,17 @@ class PlantTableCell extends React.Component {
     }
 
     render() {
+        let nextWaterText = 'Not Set';
+        if(this.props.plant.schedule.length > 0) {
+            let currentSchedule = this.props.plant.schedule.filter(s => new Date(s.watering_time).getTime() > Date.now()).sort();
+            if(currentSchedule.length > 0) {
+                if(new Date(currentSchedule[0].watering_time) - Date.now() >= 10800000) {
+                    nextWaterText = moment(currentSchedule[0].watering_time).format('MMM, Do YYYY, h:mm a');
+                } else {
+                    nextWaterText = moment(currentSchedule[0].watering_time).fromNow();
+                }
+            }
+        }
         return (
             <RowContainer>
                 <DeleteModal onClose={this.closeModal} open={this.state.modalOpen}>
@@ -47,6 +59,7 @@ class PlantTableCell extends React.Component {
                 </DeleteModal>
                 <Cell align="left">{this.props.plant.name}</Cell>
                 <Cell align="center">{this.props.plant.location ? `${this.props.plant.location}` : <LightText>N/A</LightText>}</Cell>
+                <Cell align="center">{nextWaterText}</Cell>
                 <Cell align="center">{this.props.plant.description ? `${this.props.plant.description}` : <LightText>N/A</LightText>}</Cell>
                 <Cell align="right"><ActionButton edit><Link to={`/plants/${this.props.plant.id}`}><i className="fas fa-edit"></i></Link></ActionButton><ActionButton delete onClick={this.toggleModal}><i className="fas fa-minus-square"></i></ActionButton></Cell>
             </RowContainer> 

@@ -5,6 +5,7 @@ import { NavLink } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
 import ClickOutHandler from 'react-onclickout';
 import PropTypes from 'prop-types';
+import Logo from '../new-logo.jpg';
 
 class Navigation extends React.Component {
     constructor(props) {
@@ -33,7 +34,7 @@ class Navigation extends React.Component {
             <ClickOutHandler onClickOut={this.closeNav}>
                 <TopBar position="static">
                     <Nav >
-                        <Brand>Water My Plants <MenuExpand onClick={this.toggleNav}><i className="fas fa-bars"></i></MenuExpand></Brand>
+                        <Brand><img src={Logo} height="54" alt="Water My Plants" /> <MenuExpand onClick={this.toggleNav}><i className="fas fa-bars"></i></MenuExpand></Brand>
                         <NavLinks open={this.state.navOpen}>
                         {!this.props.loggedIn ? null :
                             <>
@@ -75,13 +76,16 @@ const Brand = styled.span`
     font-family: 'Bree Serif', serif;
     font-size: 2rem;
     color: white;
-    padding: 12px;
     width: 30%;
     text-align: left;
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 2px;
+    img {
+        height: 54px;
+        
+    }
     @media (max-width: ${props => props.theme.large}) {
         width: 100%;
     }
