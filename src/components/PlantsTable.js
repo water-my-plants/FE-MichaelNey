@@ -50,7 +50,6 @@ class PlantsTable extends React.Component {
     };
 
     render() {
-        console.log(this.state);
         return (
         <TablePaper>
             <TableContainer>
@@ -58,6 +57,7 @@ class PlantsTable extends React.Component {
                     <TableRow>
                         <Cell align="left">Plant</Cell>
                         <Cell align="center">Location</Cell>
+                        <Cell align="center">Next Water</Cell>
                         <Cell align="center">Description</Cell>
                         <Cell align="right">Actions</Cell>
                     </TableRow>
