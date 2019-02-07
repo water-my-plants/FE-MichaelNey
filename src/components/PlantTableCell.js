@@ -48,7 +48,7 @@ class PlantTableCell extends React.Component {
                 <Cell align="left">{this.props.plant.name}</Cell>
                 <Cell align="center">{this.props.plant.location ? `${this.props.plant.location}` : <LightText>N/A</LightText>}</Cell>
                 <Cell align="center">{this.props.plant.description ? `${this.props.plant.description}` : <LightText>N/A</LightText>}</Cell>
-                <Cell align="right"><ActionButton edit><Link to={`/plants/${this.props.plant.id}`}><i className="fas fa-edit"></i></Link></ActionButton><ActionButton delete onClick={this.toggleModal}><i className="fas fa-times-circle"></i></ActionButton></Cell>
+                <Cell align="right"><ActionButton edit><Link to={`/plants/${this.props.plant.id}`}><i className="fas fa-edit"></i></Link></ActionButton><ActionButton delete onClick={this.toggleModal}><i className="fas fa-minus-square"></i></ActionButton></Cell>
             </RowContainer> 
         )
     }
@@ -123,6 +123,9 @@ const LightText = styled.span`
 
 const ActionButton = styled.span`
     font-size: 1.6rem;
+    i {
+        font-size: 2.3rem;
+    }
     margin: 0 4px;
     color: ${props => {
         if(props.delete) return props.theme.error;

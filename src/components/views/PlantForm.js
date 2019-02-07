@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { addPlant } from '../../actions'
+import { Link } from 'react-router-dom';
+import { addPlant } from '../../actions';
 import styled, { withTheme } from 'styled-components';
 import Card from '@material-ui/core/Card';
 import FormControl from '@material-ui/core/FormControl'
@@ -70,6 +71,7 @@ class PlantForm extends React.Component {
                             <Input type="text" name="descInput" value={this.state.descInput} onChange={this.handleInput} />
                         </InputContainer>
                         <SubmitButton type="submit">{this.props.addingPlant ? <LoadingSpinner size="28" /> : 'Add Plant'}</SubmitButton>
+                        <GoBackLink to="/plants"><i className="fas fa-arrow-left"></i> Go Back</GoBackLink>
                     </Form>
                 </PlantBox>
 
@@ -77,6 +79,25 @@ class PlantForm extends React.Component {
         )
     }
 }
+
+const GoBackLink = styled(Link)`
+    text-decoration: none;
+    color: ${props => props.theme.primary};
+    width: 100%;
+    font-size: 2rem;
+    margin: 12px auto;
+    padding: 6px;
+    text-align: center;
+    transition: .4s all;
+    &:hover {
+        color: ${props => props.theme.primaryLight};
+        letter-spacing: 2px;
+    }
+    &:visited {
+        text-decoration: none;
+        color: ${props => props.theme.primary};
+    }
+`;
 
 const PlantBox = styled(Card)`
     position: relative;

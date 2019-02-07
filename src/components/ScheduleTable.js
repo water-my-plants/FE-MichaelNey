@@ -57,7 +57,7 @@ class ScheduleTable extends React.Component {
             <Head>
                 <TableRow>
                     <Cell align="left">Time</Cell>
-                    <Cell align="center">Distance</Cell>
+                    <Cell className="hide-on-mobile" align="center">Distance</Cell>
                     <Cell align="right">Actions</Cell>
                 </TableRow>
             </Head>
@@ -74,14 +74,6 @@ class ScheduleTable extends React.Component {
     )
   }
 }
-
-const LoadingSpinner = styled(CircularProgress)`
-    && {
-        height: 28px;
-        width: 28px;
-        color: white;
-    }
-`; 
 
 const ToggleModalSpan = styled.span`
     color: ${props => props.theme.primaryLight};
@@ -128,6 +120,9 @@ const Cell = styled(TableCell)`
             }};
             &:last-of-type {
                 padding-right: 6px;
+            }
+            &.hide-on-mobile {
+                display: none;
             }
         }
     }

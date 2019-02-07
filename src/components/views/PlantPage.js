@@ -143,9 +143,9 @@ const ModalButton = styled(Button)`
         }};
         &:hover {
             background: ${props => {
-            if(props.yes) return props.theme.errorDark;
-            return props.theme.primaryLight;
-        }};
+                if(props.yes) return props.theme.errorDark;
+                return props.theme.primaryLight;
+            }};
         }
     }
 `;
