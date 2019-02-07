@@ -41,6 +41,12 @@ const plantsReducer = (state = initialState, action) => {
                     if(b.schedule.length > 0 && a.schedule.length > 0) {
                         let schedB = b.schedule.filter(s => new Date(s.watering_time).getTime() > Date.now()).sort();
                         let schedA = a.schedule.filter(s => new Date(s.watering_time).getTime() > Date.now()).sort();
+                        if(schedB.length < 1) {
+                            return -1;
+                        }
+                        if(schedA.length < 1) {
+                            return 1;
+                        }
                         if(new Date(schedB[0].watering_time).getTime() > new Date(schedA[0].watering_time).getTime()) {
                             return -1
                         } else {
