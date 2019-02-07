@@ -46,6 +46,10 @@ class ScheduleForm extends React.Component {
             this.props.addNotifHelper('Your Watering Schedule start date must be before your end date!', 'error');
             return;
         }
+        if(new Date(this.state.dateInputStart) < new Date()) {
+            this.props.addNotifHelper('Your Watering Schedule start date must be later than the current time!', 'error');
+            return;
+        }
         let waterTimes = this.createWaterTimes();
         this.props.addSchedule(this.props.match.params.id, {times: waterTimes});
     }
