@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
-import { fetchPlant, fetchSchedule, addSchedule, deleteSchedule, deleteSingleSchedule, updatePlant } from '../../actions';
+import { fetchPlant, fetchSchedule, addSchedule, deleteSchedule, deleteSingleSchedule, updatePlant, addNotifHelper } from '../../actions';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -99,13 +99,13 @@ class PlantPage extends React.Component {
                                 schedule={this.props.waterSchedule} 
                                 deleteSchedule={this.props.deleteSchedule} 
                                 deleteSingleSchedule={this.props.deleteSingleSchedule} 
-                                deletingSchedule={this.props.deletingSchedule}
+                                deletingSchedule={this.props.deletingSchedule} 
                                 toggleModal={this.toggleScheduleModal}
                             />
                             
                             </> }
                             <ScheduleFormModal onClose={this.closeModal} open={this.state.scheduleModal}>
-                                <ScheduleForm addingSchedule={this.props.addingSchedule} addSchedule={this.props.addSchedule} toggleModal={this.closeModal} />
+                                <ScheduleForm addNotifHelper={this.props.addNotifHelper} addingSchedule={this.props.addingSchedule} addSchedule={this.props.addSchedule} toggleModal={this.closeModal} />
                             </ScheduleFormModal>
                             <ScheduleFormModal onClose={this.closeModal} open={this.state.deleteScheduleModal}>
                                 <ModalBox>
@@ -144,9 +144,9 @@ const ModalButton = styled(Button)`
         }};
         &:hover {
             background: ${props => {
-            if(props.yes) return props.theme.errorDark;
-            return props.theme.primaryLight;
-        }};
+                if(props.yes) return props.theme.errorDark;
+                return props.theme.primaryLight;
+            }};
         }
     }
 `;
@@ -271,6 +271,7 @@ PlantPage.propTypes = {
     fetchSchedule: PropTypes.func.isRequired,
     fetchingPlant: PropTypes.bool.isRequired,
     fetchingSchedule: PropTypes.bool.isRequired,
+    addNotifHelper: PropTypes.func.isRequired,
     lastFetchedPlant: PropTypes.shape({
         description: PropTypes.string,
         id: PropTypes.number.isRequired,
@@ -296,8 +297,8 @@ const mapStateToProps = state => {
         waterSchedule: state.scheduleReducer.waterSchedule,
         fetchingSchedule: state.scheduleReducer.fetchingSchedule,
         addingSchedule: state.scheduleReducer.addingSchedule,
-        deletingSchedule: state.scheduleReducer.deletingSchedule
+        deletingSchedule: state.scheduleReducer.deletingSchedule,
     }
 }
 
-export default connect(mapStateToProps, { fetchPlant, fetchSchedule, addSchedule, deleteSchedule, deleteSingleSchedule, updatePlant })(PlantPage);
+export default connect(mapStateToProps, { addNotifHelper, fetchPlant, fetchSchedule, addSchedule, deleteSchedule, deleteSingleSchedule, updatePlant })(PlantPage);

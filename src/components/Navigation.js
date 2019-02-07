@@ -72,6 +72,7 @@ const MenuExpand = styled.span`
 `;
 
 const Brand = styled.span`
+    font-family: 'Bree Serif', serif;
     font-size: 2rem;
     color: white;
     padding: 12px;
@@ -80,6 +81,7 @@ const Brand = styled.span`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 2px;
     @media (max-width: ${props => props.theme.large}) {
         width: 100%;
     }

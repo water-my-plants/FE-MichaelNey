@@ -33,7 +33,7 @@ const scheduleReducer = (state = initialState, action) => {
             return {
                 ...state,
                 fetchingSchedule: false,
-                waterSchedule: action.payload
+                waterSchedule: action.payload.filter(s => new Date(s.watering_time).getTime() > Date.now()).sort()
             }
         case FETCH_SCHEDULE_FAILURE:
             return {
@@ -49,7 +49,7 @@ const scheduleReducer = (state = initialState, action) => {
             return {
                 ...state,
                 addingSchedule: false,
-                waterSchedule: action.payload
+                waterSchedule: action.payload.filter(s => new Date(s.watering_time).getTime() > Date.now()).sort()
             }
         case ADD_SCHEDULE_FAILURE:
             return {
@@ -81,7 +81,7 @@ const scheduleReducer = (state = initialState, action) => {
             return {
                 ...state,
                 deletingSingleSchedule: false,
-                waterSchedule: action.payload
+                waterSchedule: action.payload.filter(s => new Date(s.watering_time).getTime() > Date.now()).sort()
             }
         case DELETE_SINGLE_SCHEDULE_FAILURE:
             return {

@@ -46,8 +46,8 @@ class ScheduleTableCell extends React.Component {
                     </ModalBox>
                 </DeleteModal>
                 <Cell align="left">{moment(this.props.schedule.watering_time).format('ddd, MMM, Do YYYY, h:mm:ss a')}</Cell>
-                <Cell align="center">{moment(this.props.schedule.watering_time).fromNow()}</Cell>
-                <Cell align="right"><ActionButton delete onClick={this.toggleModal}>Delete <i className="fas fa-times-circle"></i></ActionButton></Cell> 
+                <Cell className="hide-on-mobile" align="center">{(moment(this.props.schedule.watering_time).fromNow())}</Cell>
+                <Cell align="right"><ActionButton delete onClick={this.toggleModal}><i className="fas fa-minus-square"></i></ActionButton></Cell> 
             </RowContainer> 
         )
     }
@@ -111,12 +111,18 @@ const Cell = styled(TableCell)`
             &:last-of-type {
                 padding-right: 6px;
             }
+            &.hide-on-mobile {
+                display: none;
+            }
         }
     }
 `;
 
 const ActionButton = styled.span`
     font-size: 1.6rem;
+    i {
+        font-size: 2.3rem;
+    }
     margin: 0 4px;
     color: ${props => {
         if(props.delete) return props.theme.error;

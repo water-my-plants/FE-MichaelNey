@@ -63,7 +63,7 @@ class EditPlantForm extends React.Component {
                     <Input type="text" name="descriptionInput" value={this.state.descriptionInput} onChange={this.handleInput} />
                 </InputContainer>
                 {/* If we are logging in, show a loading indicator while waiting for the response. */}
-                <EditBtn type="submit">{this.props.updatingPlant ? <LoadingSpinner size="28" /> : 'Edit Plant'}</EditBtn>
+                <EditBtn type="submit">{this.props.updatingPlant ? <LoadingSpinner size="28" /> : 'Update'}</EditBtn>
             </Form>
         </EditPlantFormBox>
         )

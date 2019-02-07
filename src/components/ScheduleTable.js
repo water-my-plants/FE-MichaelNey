@@ -57,14 +57,14 @@ class ScheduleTable extends React.Component {
             <Head>
                 <TableRow>
                     <Cell align="left">Time</Cell>
-                    <Cell align="center">Distance</Cell>
+                    <Cell className="hide-on-mobile" align="center">Distance</Cell>
                     <Cell align="right">Actions</Cell>
                 </TableRow>
             </Head>
             <TableBody>
                 {/* If we have no watering schedules that haven't passed yet, we will display the table, with the first and only cell being a message stating that they have no watering schedules, but offering a link for them to add one! If there are watering schedules, we simply map over them to display a table row for each watering schedules! */}
-                {this.props.schedule.filter(s => new Date(s.watering_time).getTime() > Date.now()).length < 1 ? <><TableRow><Cell align="left">{''}</Cell><Cell align="center"><h3>You don't have any watering schedules for this plant!</h3><h3><ToggleModalSpan onClick={this.props.toggleModal}>Add one!</ToggleModalSpan></h3></Cell></TableRow></> :
-                    this.props.schedule.filter(s => new Date(s.watering_time).getTime() > Date.now()).sort().map(p => {
+                {this.props.schedule.length < 1 ? <><TableRow><Cell align="left">{''}</Cell><Cell align="center"><h3>You don't have any watering schedules for this plant!</h3><h3><ToggleModalSpan onClick={this.props.toggleModal}>Add one!</ToggleModalSpan></h3></Cell></TableRow></> :
+                    this.props.schedule.map(p => {
                         return  <ScheduleTableCell key={p.id} deleteSingleSchedule={this.props.deleteSingleSchedule} plantId={this.props.plantId} schedule={p} />
                     })
                 }
@@ -74,14 +74,6 @@ class ScheduleTable extends React.Component {
     )
   }
 }
-
-const LoadingSpinner = styled(CircularProgress)`
-    && {
-        height: 28px;
-        width: 28px;
-        color: white;
-    }
-`; 
 
 const ToggleModalSpan = styled.span`
     color: ${props => props.theme.primaryLight};
@@ -128,6 +120,9 @@ const Cell = styled(TableCell)`
             }};
             &:last-of-type {
                 padding-right: 6px;
+            }
+            &.hide-on-mobile {
+                display: none;
             }
         }
     }

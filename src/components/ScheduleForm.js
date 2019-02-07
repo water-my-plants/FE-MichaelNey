@@ -18,11 +18,18 @@ import PropTypes from 'prop-types';
 class ScheduleForm extends React.Component {
     constructor(props) {
         super(props);
+        let today = new Date();
+        let tomorrow = new Date();
+        tomorrow.setDate(today.getDate()+1);
+        tomorrow.setHours(0);
+        tomorrow.setMinutes(0);
+        tomorrow.setSeconds(0);
+        tomorrow.setMilliseconds(0);
         this.state = {
             minDate: new Date(Date.now()),
             minDateEnd: new Date(Date.now() + 86700000),
             dateInputStart: new Date(Date.now() + 300000),
-            dateInputEnd: new Date(Date.now() + 87300000),
+            dateInputEnd: tomorrow,
             frequency: 86400000
         }
     }
@@ -35,6 +42,14 @@ class ScheduleForm extends React.Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
+        if(new Date(this.state.dateInputStart) > new Date(this.state.dateInputEnd)) {
+            this.props.addNotifHelper('Your Watering Schedule start date must be before your end date!', 'error');
+            return;
+        }
+        if(new Date(this.state.dateInputStart) < new Date()) {
+            this.props.addNotifHelper('Your Watering Schedule start date must be later than the current time!', 'error');
+            return;
+        }
         let waterTimes = this.createWaterTimes();
         this.props.addSchedule(this.props.match.params.id, {times: waterTimes});
     }
@@ -57,6 +72,7 @@ class ScheduleForm extends React.Component {
     }
 
     handleDateStart = date => {
+        date.setSeconds(0);
         this.setState({
             dateInputStart: date
         });
@@ -98,13 +114,13 @@ class ScheduleForm extends React.Component {
                     />
                 </InputContainer>
                 <InputContainer variant="filled">
-                    <Label htmlFor="dateInputEnd">End Day (Latest Possible Water)</Label>
+                    <Label htmlFor="dateInputEnd">Schedule End</Label>
                     <DatePicker
                         popperContainer={CalendarContainer}
                         name="dateInputEnd"
                         popperPlacement="top"
                         dateFormat="MMMM d, yyyy h:mm aa"
-                        showTimeSelect
+                        
                         timeIntervals={15}
                         minDate={this.state.minDateEnd}
                         selected={this.state.dateInputEnd}

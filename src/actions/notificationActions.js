@@ -24,7 +24,7 @@ export const addNotifHelper = (message, type) => {
     if(type === 'error') {
         if(message.response) {
             message = message.response.data.error;
-        } else {
+        } else if(message.message) {
             message = message.message;
         }
     }
