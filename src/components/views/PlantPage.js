@@ -100,6 +100,7 @@ class PlantPage extends React.Component {
                                 deleteSchedule={this.props.deleteSchedule} 
                                 deleteSingleSchedule={this.props.deleteSingleSchedule} 
                                 deletingSchedule={this.props.deletingSchedule} 
+                                toggleModal={this.toggleScheduleModal}
                             />
                             
                             </> }
