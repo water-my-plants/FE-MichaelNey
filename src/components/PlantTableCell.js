@@ -42,7 +42,7 @@ class PlantTableCell extends React.Component {
             let currentSchedule = this.props.plant.schedule.filter(s => new Date(s.watering_time).getTime() > Date.now()).sort();
             if(currentSchedule.length > 0) {
                 if(new Date(currentSchedule[0].watering_time) - Date.now() >= 10800000) {
-                    nextWaterText = moment(currentSchedule[0].watering_time).format('MMM, Do YYYY, h:mm a');
+                    nextWaterText = moment(currentSchedule[0].watering_time).format('YYYY-MM-DD, h:mm a');
                 } else {
                     nextWaterText = moment(currentSchedule[0].watering_time).fromNow();
                 }
@@ -58,9 +58,9 @@ class PlantTableCell extends React.Component {
                     </ModalBox>
                 </DeleteModal>
                 <Cell align="left">{this.props.plant.name}</Cell>
-                <Cell align="center">{this.props.plant.location ? `${this.props.plant.location}` : <LightText>N/A</LightText>}</Cell>
+                <Cell className="hide-on-mobile" align="center">{this.props.plant.location ? `${this.props.plant.location}` : <LightText>N/A</LightText>}</Cell>
                 <Cell align="center">{nextWaterText}</Cell>
-                <Cell align="center">{this.props.plant.description ? `${this.props.plant.description}` : <LightText>N/A</LightText>}</Cell>
+                <Cell className="hide-on-mobile" align="center">{this.props.plant.description ? `${this.props.plant.description}` : <LightText>N/A</LightText>}</Cell>
                 <Cell align="right"><ActionButton edit><Link to={`/plants/${this.props.plant.id}`}><i className="fas fa-edit"></i></Link></ActionButton><ActionButton delete onClick={this.toggleModal}><i className="fas fa-minus-square"></i></ActionButton></Cell>
             </RowContainer> 
         )
@@ -90,6 +90,9 @@ const Cell = styled(TableCell)`
             padding: 3px;
             &:last-of-type {
                 padding-right: 6px;
+            }
+            &.hide-on-mobile {
+                display: none;
             }
         }
     }

@@ -45,7 +45,7 @@ class ScheduleTableCell extends React.Component {
                         <ModalButton yes="true" onClick={e => this.deleteSchedule(this.props.plantId, this.props.schedule.id)}>Delete</ModalButton> 
                     </ModalBox>
                 </DeleteModal>
-                <Cell align="left">{moment(this.props.schedule.watering_time).format('MMM, Do YYYY, h:mm a')}</Cell>
+                <Cell align="left">{moment(this.props.schedule.watering_time).format('YYYY-MM-DD, h:mm a')}</Cell>
                 <Cell className="hide-on-mobile" align="center">{(moment(this.props.schedule.watering_time).fromNow())}</Cell>
                 <Cell align="right"><ActionButton delete onClick={this.toggleModal}><i className="fas fa-minus-square"></i></ActionButton></Cell> 
             </RowContainer> 
