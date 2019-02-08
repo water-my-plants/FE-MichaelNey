@@ -56,9 +56,9 @@ class PlantsTable extends React.Component {
                 <Head>
                     <TableRow>
                         <Cell align="left">Plant</Cell>
-                        <Cell align="center">Location</Cell>
+                        <Cell className="hide-on-mobile" align="center">Location</Cell>
                         <Cell align="center">Next Water</Cell>
-                        <Cell align="center">Description</Cell>
+                        <Cell className="hide-on-mobile" align="center">Description</Cell>
                         <Cell align="right">Actions</Cell>
                     </TableRow>
                 </Head>
@@ -161,6 +161,9 @@ const Cell = styled(TableCell)`
             padding: 6px;
             &:last-of-type {
                 padding-right: 6px;
+            }
+            &.hide-on-mobile {
+                display: none;
             }
         }
     }
